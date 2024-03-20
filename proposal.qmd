@@ -4,4 +4,12 @@ format: html
 editor: visual
 ---
 
-Add proposal here...
+```{r}
+#| label: data
+
+library(tidyverse)
+
+presidents <- read_csv("1976-2020-president.csv")
+
+```
+
