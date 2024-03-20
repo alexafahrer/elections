@@ -13,3 +13,4 @@ presidents <- read_csv("1976-2020-president.csv")
 
 ```
 
+We want to create an animation of the change in states voting tendencies in presidential elections since 1976.
