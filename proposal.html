@@ -110,19 +110,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>presidents <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"1976-2020-president.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 4287 Columns: 15
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (6): state, state_po, office, candidate, party_detailed, party_simplified
-dbl (7): year, state_fips, state_cen, state_ic, candidatevotes, totalvotes, ...
-lgl (2): writein, notes
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>presidents <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/1976-2020-president.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
+<p>We want to create an animation of the change in states voting tendencies in presidential elections since 1976. We also want to explore how the number of alternative votes (for non republicans and democrats) has changed over time. and we’re really excited!</p>
+<section id="goals" class="level1">
+<h1>Goals</h1>
+<p>Overall, we want to create an animated spatio-temporal visualization to explore state voting tendencies in US presidential elections since 1976.</p>
+<p>We are interested in voting behaviors in states in the US and examining whether the distribution of votes for political parties has changed over time. This topic is exciting and intriguing to us because 2024 is an election year and the upcoming presidential election is a current topic of discussion among many students on campus. Another area of interest to our team is how the number of third party votes (for candidates not in the Republican and Democratic parties) has changed since 1976. While a third party candidate has never won a presidential election in the United States, the rise of public figures such as Kanye West running for president has drawn mass media attention in recent news. The members of our team are from Alabama, Arizona, Missouri, and New York, so we are especially interested to examine past voting behaviors in our home states and see how it has changed over the past 45 years. We plan to plot a US map for every presidential election year and then create an animation by putting together the maps for all the years. The color of the state (red or blue) will represent the political party of the candidate who won that state’s election and the intensity of the color will measure how Republican or Democrat-leaning the state is. Alternatively, if we run into challenges with animation or want to change focus, we are also interested in creating an interactive, informational Shiny dashboard where users could click on specific states and years to see which candidate won that state’s election in the given year.</p>
+<p>Our data set has voting records for every state in the US for every presidential election from 1976 to 2020, including how many votes every candidate got and the parties of those candidates. There are 4287 total observations, each representing a presidential candidate, and 15 variables. These variables are both numeric, such as the election year and how many votes a candidate received, and categorical, including the state that the candidate ran in, their political party, and whether they were a write-in candidate or not. The MIT Election Data and Science Lab (MEDSL) originally created the data set in 2017, and we accessed it through the Harvard Dataverse website. We chose this particular data set because it is from a reputable source for election data and it includes candidates who received votes besides the Democrat and Republican candidates. This will be important for our investigation into the potential rise of third-party candidates.</p>
+<p><a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX">Data source</a></p>
+</section>
+<section id="plan-of-attack" class="level1">
+<h1>Plan of Attack</h1>
+</section>
 
 </main>
 <!-- /main column -->
