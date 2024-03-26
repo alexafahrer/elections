@@ -96,23 +96,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<section id="data" class="level1">
+<h1>Data</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.0     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>presidents <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/1976-2020-president.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>presidents <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/1976-2020-president.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>We want to create an animation of the change in states voting tendencies in presidential elections since 1976. We also want to explore how the number of alternative votes (for non republicans and democrats) has changed over time. and we’re really excited!</p>
+</section>
 <section id="goals" class="level1">
 <h1>Goals</h1>
 <p>Overall, we want to create an animated spatio-temporal visualization to explore state voting tendencies in US presidential elections since 1976.</p>
@@ -122,6 +113,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="plan-of-attack" class="level1">
 <h1>Plan of Attack</h1>
+<p>Week 1 (March 18): Team members will work in lab to develop focus of project, pick a data set, and start working on project proposal. All team members will contribute outside of class.</p>
+<p>Week 2 (March 25): Team will finish project proposal by lab on Wednesday. In lab, team will review other team’s proposals and complete peer reviews. After lab, team members will communicate to update proposal based on peer feedback. Team will submit updated project proposal by 5pm on Friday.</p>
+<p>Week 3 (April 1): After receiving feedback on the proposal from teaching team, team will meet outside of class to make any necessary edits, start working, and delegate tasks. The entire team will start working on creating the first US visualization for 1976 and will agree upon the map before recreating the plot for every election year after 1976. Two team members will start to research animation techniques.</p>
+<p>Week 4 (April 8): The team will complete one map for 1976 and start working on duplicating the technique for all other election years. Animation sub-team will continue to research animation techniques.</p>
+<p>Week 5 (April 15): The maps should be completed. The team will then focus on animation and assembling all the maps together.</p>
+<p>Week 6 (April 22): Team will finish most or all of project by lab on Wednesday. In lab, team will review other team’s code and complete peer reviews. After lab, team members will communicate to update project based on peer feedback. Team will then meet to finalize project and start preparing for presentation.</p>
+<p>Week 7 (April 29): Outside of class, team will meet to put any finishing touches on the project and practice for the presentation. Final project and presentation is due on Wednesday, May 1st at 9am.</p>
 </section>
 
 </main>
