@@ -7,6 +7,8 @@
 
 This dataset is comprised of results from U.S. presidential elections spanning from 1976 to 2020. Each record in the dataset represents the number of votes a candidate received in a particular state for a specific year. The dataset includes details such as the year, state, party affiliation, and total votes cast.
 
+Link to Dataset: https://dataverse.harvard.edu/file.xhtml?fileId=4299753&version=7.0&toolType=QUERY
+
 ## Data Collection Methods
 
 The data were compiled from official sources by political science researchers. It encompasses nationwide presidential election results, broken down by state. The dataset does not specify the individual sources for each year; however, election results are typically sourced from state secretaries of state and historical archives.
