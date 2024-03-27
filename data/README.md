@@ -1,6 +1,3 @@
-# project-2
-
-
 # U.S. Presidential Election Results (1976-2020)
 
 ## Description
