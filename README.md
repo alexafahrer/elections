@@ -5,7 +5,7 @@
 
 ## Description
 
-In this project, we are looking at state voting trends in the United States presidential elections. We will create animated, spatio-temporal  viziualizations to explore these tendencies in presidential elections from 1976 to 2020. 
+In this project, we are looking at state voting trends in the United States presidential elections. We will create animated, spatio-temporal  visualizations to explore these tendencies in presidential elections from 1976 to 2020. 
 
 
 ## Files
