@@ -5,14 +5,14 @@
 
 ## Description
 
-In this project, we are looking at the change in voting overtime in the United States through animation. We will cerate spatio temportal viziualizations to explroe these tendancies 1976. 
+In this project, we are looking at state voting trends in the United States presidential elections. We will create animated, spatio-temporal  viziualizations to explore these tendencies in presidential elections from 1976 to 2020. 
 
 
 ## Files
 
 The files in this folder include:
 
-- `project-2.Rproj`: File neccesary to use with RSTUDIO
+- `project-2.Rproj`: File necessary to use with RSTUDIO
 - `proposal.qmd`: Includes our plan and intentions for the project so far. 
 - Data Folder: this has our data for the project thus far. 
 
