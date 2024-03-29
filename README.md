@@ -14,6 +14,8 @@ The files in this folder include:
 
 - `project-2.Rproj`: File necessary to use with RSTUDIO
 - `proposal.qmd`: Includes our plan and intentions for the project so far. 
+- `index.qmd`: Will house our final write-up once the project is completed.
+- `about.qmd`: Includes a description of the team members.
 - Data Folder: this has our data for the project thus far. 
 
 

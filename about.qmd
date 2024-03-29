@@ -1,0 +1,6 @@
+This project was developed by **Team Ella** For [STA/ISS 313: Advanced Data Visualization](https://vizdata.org/) at Duke University. The team is comprised of the following team members.
+
+-   Team member 1: My name is Ryan Silver, a sophomore from St. Louis, and I am majoring in Economics and minoring in Statistical Science. I love playing pickleball and racquetball in my free time.
+-   Team member 2: My name is Alexa Fahrer, a sophomore from Phoenix, and I am a double major in Public Policy and Statistics with a minor in Education. In my free time, I enjoy watching movies, cheering on the 49ers, and playing pickleball.
+-   Team member 3: My name is Ella Hartman and I am aenior from Birmingham, Alabama studying Computer Science and Economics.
+-   Team member 4: My name is Noah Costa and I am a senior from Long Island, New York studying Computer Science.
