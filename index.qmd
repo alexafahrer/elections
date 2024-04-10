@@ -9,7 +9,6 @@ editor: visual
 #| message: false
 
 library(tidyverse)
-library(sf)
 library(usmap)
 
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
@@ -24,10 +23,6 @@ presidents1
 ```
 
 ```{r}
-presidents
-```
-
-```{r}
 #| label: maps
 
 plot_usmap("states")
@@ -37,10 +32,16 @@ map_data <- presidents |>
   group_by(state) |>
   filter(candidatevotes == max(candidatevotes)) |>
   ungroup() |>
-  select(state_fips, party_detailed) |>
-  rename(fips = state_fips, values = party_detailed)
+  select(state_fips, party_simplified) |>
+  rename(fips = state_fips, values = party_simplified)
 
 plot_usmap("states", data = map_data) +
-  scale_fill_manual(values = c("blue", "red")) 
+  scale_fill_manual(values = c("blue", "red"))  +
+  labs(    
+    fill = "Political Party"
+    ) +
+  theme(
+    legend.position = "right"
+  )
 
 ```
