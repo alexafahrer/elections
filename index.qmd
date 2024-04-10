@@ -10,7 +10,7 @@ editor: visual
 
 library(tidyverse)
 library(sf)
-library(tigris)
+library(usmap)
 
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 
@@ -27,21 +27,22 @@ presidents1
 presidents
 ```
 
+
+
 ```{r}
 #| label: maps
 
-usa_map <- states(cb = TRUE, year = 2022, progress_bar = FALSE)
+plot_usmap("states")
 
-presidents |>
+map_data <- presidents |>
   filter(year == 1976) |>
   group_by(state) |>
   filter(candidatevotes == max(candidatevotes)) |>
-  left_join(usa_map, by = join_by("state_po" == "STUSPS")) |>
-  ggplot() +
-  geom_sf(aes(geometry = geometry, fill = party_detailed)) +
-  scale_fill_manual(values = c("blue", "red")) +
-  coord_sf(xlim = c(-180, -60), ylim = c(20, 70)) +
-  theme_void() +
-  labs(fill = "Political Party")
+  ungroup() |>
+  select(state_fips, party_detailed) |>
+  rename(fips = state_fips, values = party_detailed)
+
+plot_usmap("states", data = map_data) +
+  scale_fill_manual(values = c("blue", "red")) 
 
 ```
