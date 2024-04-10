@@ -27,8 +27,6 @@ presidents1
 presidents
 ```
 
-
-
 ```{r}
 #| label: maps
 
