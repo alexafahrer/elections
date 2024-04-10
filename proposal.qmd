@@ -30,16 +30,16 @@ Our data set has voting records for every state in the US for every presidential
 
 # Plan of Attack
 
-Week 1 (March 18): Team members will work in lab to develop focus of project, pick a data set, and start working on project proposal. All team members will contribute outside of class. 
+Week 1 (March 18): Team members will work in lab to develop focus of project, pick a data set, and start working on project proposal. All team members will contribute outside of class.
 
-Week 2 (March 25): Team will finish project proposal by lab on Wednesday. In lab, team will review other team's proposals and complete peer reviews. After lab, team members will communicate to update proposal based on peer feedback. Team will submit updated project proposal by 5pm on Friday. 
+Week 2 (March 25): Team will finish project proposal by lab on Wednesday. In lab, team will review other team's proposals and complete peer reviews. After lab, team members will communicate to update proposal based on peer feedback. Team will submit updated project proposal by 5pm on Friday.
 
-Week 3 (April 1): After receiving feedback on the proposal from teaching team, team will meet outside of class to make any necessary edits, start working, and delegate tasks. The entire team will start working on creating the first US visualization for 1976 and will agree upon the map before recreating the plot for every election year after 1976. Two team members will start to research animation techniques. 
+Week 3 (April 1): After receiving feedback on the proposal from teaching team, team will meet outside of class to make any necessary edits, start working, and delegate tasks. The entire team will start working on creating the first US visualization for 1976 and will agree upon the map before recreating the plot for every election year after 1976. Two team members will start to research animation techniques.
 
-Week 4 (April 8): The team will complete one map for 1976 and start working on duplicating the technique for all other election years. Animation sub-team will continue to research animation techniques. 
+Week 4 (April 8): The team will complete one map for 1976 and start working on duplicating the technique for all other election years. Animation sub-team will continue to research animation techniques.
 
 Week 5 (April 15): The maps should be completed. The team will then focus on animation and assembling all the maps together.
 
-Week 6 (April 22): Team will finish most or all of project by lab on Wednesday. In lab, team will review other team's code and complete peer reviews. After lab, team members will communicate to update project based on peer feedback. Team will then meet to finalize project and start preparing for presentation. 
+Week 6 (April 22): Team will finish most or all of project by lab on Wednesday. In lab, team will review other team's code and complete peer reviews. After lab, team members will communicate to update project based on peer feedback. Team will then meet to finalize project and start preparing for presentation.
 
-Week 7 (April 29): Outside of class, team will meet to put any finishing touches on the project and practice for the presentation. Final project and presentation is due on Wednesday, May 1st at 9am. 
+Week 7 (April 29): Outside of class, team will meet to put any finishing touches on the project and practice for the presentation. Final project and presentation is due on Wednesday, May 1st at 9am.
