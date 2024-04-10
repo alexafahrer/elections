@@ -14,6 +14,17 @@ library(tigris)
 
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 
+presidents1 <- presidents |>
+  filter(party_detailed %in% c("DEMOCRAT", "REPUBLICAN"),
+         candidatevotes != 1109659)  |>
+  select(party_detailed, year, state, candidatevotes, totalvotes)
+  
+
+presidents1
+```
+
+```{r}
+presidents
 ```
 
 ```{r}
