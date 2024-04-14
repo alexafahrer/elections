@@ -36,7 +36,7 @@ presidents_winner <- presidents |>
 presidents_winner |>
   count(candidate)
 
-presidents1 <- presidents |>
+gradient_map_data <- presidents |>
   filter(party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
          state != "DISTRICT OF COLUMBIA", 
          year == 2000) |>
@@ -53,7 +53,7 @@ presidents1 <- presidents |>
 ```{r}
 #| label: map
 
-plot_usmap("states", data = presidents1) +
+plot_usmap("states", data = gradient_map_data) +
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0)
 
 ```
@@ -63,7 +63,7 @@ plot_usmap("states", data = presidents1) +
 
 plot_usmap("states")
 
-map_data <- presidents |>
+red_blue_map_data <- presidents |>
   filter(year == 1976) |>
   group_by(state) |>
   filter(candidatevotes == max(candidatevotes)) |>

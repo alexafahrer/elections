@@ -76,7 +76,7 @@ Source: [https://www.visualcrossing.com/resources/documentation/weather-api/unit
 #   .default = "light"
 #   )
 
-presidents1 <- presidents |>
+gradient_map_data <- presidents |>
   filter(party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
          state != "DISTRICT OF COLUMBIA", 
          year == 2000) |>
@@ -87,6 +87,14 @@ presidents1 <- presidents |>
   reframe(rep_dem_diff = diff(perc_votes)) |>
   select(-year) |>
   rename(fips = state_fips, values = rep_dem_diff) 
+
+red_blue_map_data <- presidents |>
+  filter(year == 1976) |>
+  group_by(state) |>
+  filter(candidatevotes == max(candidatevotes)) |>
+  ungroup() |>
+  select(state_fips, party_detailed) |>
+  rename(fips = state_fips, values = party_detailed)
 
 ```
 
@@ -146,7 +154,7 @@ presidents1 <- presidents |>
 #     y = "Snow fall"
 #   )
 
-plot_usmap("states", data = presidents1) +
+plot_usmap("states", data = gradient_map_data) +
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0)
 
 ```
@@ -166,5 +174,8 @@ plot_usmap("states", data = presidents1) +
 #     x = "Date",
 #     y = "Snow depth"
 #   )
+
+plot_usmap("states", data = red_blue_map_data) +
+  scale_fill_manual(values = c("blue", "red")) 
 
 ```
