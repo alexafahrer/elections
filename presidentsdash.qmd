@@ -62,19 +62,6 @@ Source: [https://www.visualcrossing.com/resources/documentation/weather-api/unit
 
 ```{r}
 #| include: false
-# n_snow <- meribel |>
-#   filter(snow > 0) |>
-#   nrow()
-# 
-# n_below_freezing <- meribel |>
-#   filter(temp < 32) |>
-#   nrow()
-# 
-# n_below_freezing_color <- case_when(
-#   n_below_freezing > 5 ~ "danger",
-#   n_below_freezing <= 5 &  n_below_freezing > 3 ~ "warning",
-#   .default = "light"
-#   )
 
 gradient_map_data <- presidents |>
   filter(party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
@@ -105,10 +92,7 @@ red_blue_map_data <- presidents |>
 #| content: valuebox
 #| title: "Today"
 
-# list(
-#   color = "secondary",
-#   value = today
-# )
+
 
 ```
 
@@ -116,11 +100,6 @@ red_blue_map_data <- presidents |>
 #| content: valuebox
 #| title: "Snowy days"
 
-# list(
-#   icon = "snow",
-#   color = "primary",
-#   value = n_snow
-# )
 
 ```
 
@@ -128,11 +107,6 @@ red_blue_map_data <- presidents |>
 #| content: valuebox
 #| title: "Number of days below freezing"
 
-# list(
-#   icon = "thermometer-snow",
-#   color = n_below_freezing_color,
-#   value = n_below_freezing
-# )
 
 ```
 
@@ -143,17 +117,6 @@ red_blue_map_data <- presidents |>
 ```{r}
 #| title: Snow fall (in)
 
-# ggplot(meribel, aes(x = datetime, y = snow)) +
-#   geom_line() +
-#   geom_vline(
-#     xintercept = today, linetype = "dashed", 
-#     color = "#ae8b2d", linewidth = 1.5
-#   ) +
-#   labs(
-#     x = "Date",
-#     y = "Snow fall"
-#   )
-
 plot_usmap("states", data = gradient_map_data) +
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0)
 
@@ -163,17 +126,6 @@ plot_usmap("states", data = gradient_map_data) +
 
 ```{r}
 #| title: Snow depth (in)
-
-# ggplot(meribel, aes(x = datetime, y = snowdepth)) +
-#   geom_line() +
-#   geom_vline(
-#     xintercept = today, linetype = "dashed", 
-#     color = "#ae8b2d", linewidth = 1.5
-#   ) +
-#   labs(
-#     x = "Date",
-#     y = "Snow depth"
-#   )
 
 plot_usmap("states", data = red_blue_map_data) +
   scale_fill_manual(values = c("blue", "red")) 
