@@ -134,4 +134,20 @@ Source: [https://www.visualcrossing.com/resources/documentation/weather-api/unit
 
 ```
 
+### Column {width="40%"}
 
+```{r}
+#| title: Snow depth (in)
+
+# ggplot(meribel, aes(x = datetime, y = snowdepth)) +
+#   geom_line() +
+#   geom_vline(
+#     xintercept = today, linetype = "dashed", 
+#     color = "#ae8b2d", linewidth = 1.5
+#   ) +
+#   labs(
+#     x = "Date",
+#     y = "Snow depth"
+#   )
+
+```
