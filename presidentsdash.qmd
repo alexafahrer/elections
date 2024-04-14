@@ -40,10 +40,8 @@ The data were gathered from the [Harvard Dataverse Database](https://dataverse.h
 ::: {.callout-note}
 ## Plot Notes
 
-This plot represents the popular vote within each state in the presidential
+This plot represents the **popular vote** within each state in the presidential
 election from the selected year.
-
-Source: [(https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX)]((https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX)).
 :::
 
 
