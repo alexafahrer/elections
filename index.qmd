@@ -15,15 +15,23 @@ library(usmap)
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 
 presidents1 <- presidents |>
-  filter(party_detailed %in% c("DEMOCRAT", "REPUBLICAN")) |>
-  select(party_detailed, year, state, candidatevotes, totalvotes) |>
+  filter(party_detailed %in% c("DEMOCRAT", "REPUBLICAN"),
+         state != "DISTRICT OF COLUMBIA", 
+         year == 2020) |>
+  select(party_detailed, year, state_fips, candidatevotes, totalvotes) |>
   mutate(perc_votes = candidatevotes / totalvotes) |>
   arrange(party_detailed) |>
-  group_by(year, state) |>
+  group_by(year, state_fips) |>
   reframe(rep_dem_diff = diff(perc_votes))
 
 
-presidents1
+maps <- presidents1 |>
+  select(-year) |>
+  rename(fips = state_fips, values = rep_dem_diff) 
+
+plot_usmap("states", data = maps) +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0)
+
 ```
 
 ```{r}
