@@ -9,6 +9,7 @@ editor: visual
 #| message: false
 
 library(tidyverse)
+library(sf)
 library(usmap)
 
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
@@ -16,10 +17,18 @@ presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 presidents1 <- presidents |>
   filter(party_detailed %in% c("DEMOCRAT", "REPUBLICAN"),
          candidatevotes != 1109659)  |>
-  select(party_detailed, year, state, candidatevotes, totalvotes)
-  
+  select(party_detailed, year, state, candidatevotes, totalvotes) |>
+  mutate(perc_votes = candidatevotes / totalvotes) |>
+  arrange(party_detailed) |>
+  group_by(year, state) |>
+  summarize(rep_dem_diff = diff(perc_votes))
+
 
 presidents1
+```
+
+```{r}
+presidents
 ```
 
 ```{r}
@@ -32,16 +41,10 @@ map_data <- presidents |>
   group_by(state) |>
   filter(candidatevotes == max(candidatevotes)) |>
   ungroup() |>
-  select(state_fips, party_simplified) |>
-  rename(fips = state_fips, values = party_simplified)
+  select(state_fips, party_detailed) |>
+  rename(fips = state_fips, values = party_detailed)
 
 plot_usmap("states", data = map_data) +
-  scale_fill_manual(values = c("blue", "red"))  +
-  labs(    
-    fill = "Political Party"
-    ) +
-  theme(
-    legend.position = "right"
-  )
+  scale_fill_manual(values = c("blue", "red")) 
 
 ```
