@@ -54,14 +54,14 @@ gradient_map_data <- presidents |>
 #| label: map
 
 plot_usmap("states", data = gradient_map_data) +
-  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0)
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
+  labs(fill = "Gradient") +
+  theme(legend.position = "right")
 
 ```
 
 ```{r}
 #| label: alternate-maps
-
-plot_usmap("states")
 
 red_blue_map_data <- presidents |>
   filter(year == 1976) |>
@@ -71,7 +71,11 @@ red_blue_map_data <- presidents |>
   select(state_fips, party_detailed) |>
   rename(fips = state_fips, values = party_detailed)
 
-plot_usmap("states", data = map_data) +
-  scale_fill_manual(values = c("blue", "red")) 
+plot_usmap("states", data = red_blue_map_data) +
+  scale_fill_manual(values = c("blue", "red")) +
+  labs(fill = "Presidential Party") +
+  theme(
+    legend.position = "right"
+  )
 
 ```
