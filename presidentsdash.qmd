@@ -26,3 +26,33 @@ presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 
 ```
 
+#  {.sidebar}
+
+This dashboard displays weather data for:
+
+**Méribel, [Les Allues](https://en.wikipedia.org/wiki/Les_Allues), Auvergne-Rhône-Alpes, France**
+
+The data were gathered from the [Virtual Crossing](https://www.visualcrossing.com/).
+
+<br>
+
+::: {.callout-note collapse="true"}
+## Measurement units
+
+The variables and their measurement units are given below.
+
+|                                      |                      |
+|:-------------------------------------|:---------------------|
+| **Variable**                         | **Unit** |
+| Temperature, Heat Index & Wind Chill | Degrees Fahrenheit   |
+| Precipitation                        | Inches               |
+| Snow                                 | Inches               |
+| Wind & Wind Gust                     | Miles Per Hour       |
+| Visibility                           | Miles                |
+| Pressure                             | Millibars            |
+| Solar Radiation                      | W/m^2^               |
+| Solar Energy                         | MJ/m^2^              |
+
+Source: [https://www.visualcrossing.com/resources/documentation/weather-api/unit-groups-and-measurement-units](https://www.visualcrossing.com/resources/documentation/weather-api/unit-groups-and-measurement-units/).
+:::
+
