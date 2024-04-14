@@ -56,3 +56,82 @@ The variables and their measurement units are given below.
 Source: [https://www.visualcrossing.com/resources/documentation/weather-api/unit-groups-and-measurement-units](https://www.visualcrossing.com/resources/documentation/weather-api/unit-groups-and-measurement-units/).
 :::
 
+
+# All
+
+```{r}
+#| include: false
+# n_snow <- meribel |>
+#   filter(snow > 0) |>
+#   nrow()
+# 
+# n_below_freezing <- meribel |>
+#   filter(temp < 32) |>
+#   nrow()
+# 
+# n_below_freezing_color <- case_when(
+#   n_below_freezing > 5 ~ "danger",
+#   n_below_freezing <= 5 &  n_below_freezing > 3 ~ "warning",
+#   .default = "light"
+#   )
+```
+
+
+## Row {height="20%"}
+
+```{r}
+#| content: valuebox
+#| title: "Today"
+
+# list(
+#   color = "secondary",
+#   value = today
+# )
+
+```
+
+```{r}
+#| content: valuebox
+#| title: "Snowy days"
+
+# list(
+#   icon = "snow",
+#   color = "primary",
+#   value = n_snow
+# )
+
+```
+
+```{r}
+#| content: valuebox
+#| title: "Number of days below freezing"
+
+# list(
+#   icon = "thermometer-snow",
+#   color = n_below_freezing_color,
+#   value = n_below_freezing
+# )
+
+```
+
+## Row {height="40%"}
+
+### Column {width="40%"}
+
+```{r}
+#| title: Snow fall (in)
+
+# ggplot(meribel, aes(x = datetime, y = snow)) +
+#   geom_line() +
+#   geom_vline(
+#     xintercept = today, linetype = "dashed", 
+#     color = "#ae8b2d", linewidth = 1.5
+#   ) +
+#   labs(
+#     x = "Date",
+#     y = "Snow fall"
+#   )
+
+```
+
+
