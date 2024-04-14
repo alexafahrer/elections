@@ -6,7 +6,7 @@ library(usmap)
 
 # Load data --------------------------------------------------------------------
 
-presidents <- read_csv("~/R/project-2-team_ella/app/data/1976-2020-president.csv", show_col_types = FALSE)
+presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 
 # Find all years ---------------------------------------------------------------
 
