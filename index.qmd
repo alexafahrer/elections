@@ -53,10 +53,16 @@ gradient_map_data <- presidents |>
 ```{r}
 #| label: map
 
+multiply_by_100 <- function(x) {
+  return(paste0(x * 100, " points"))
+}
+
 plot_usmap("states", data = gradient_map_data) +
-  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
-  labs(fill = "Gradient") +
-  theme(legend.position = "right")
+  scale_fill_gradient2(labels = multiply_by_100, low = "blue",
+                       high = "red", mid = "white", midpoint = 0) +
+  labs(fill = "Point Differential") +
+  theme(legend.position = "right") +
+  theme(legend.title = element_text(vjust = 1, face = "bold"))
 
 ```
 
