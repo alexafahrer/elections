@@ -92,14 +92,39 @@ list(
 
 ```{r}
 #| content: valuebox
-#| title: "Snowy days"
+#| title: "Popular Vote Winner"
+
+
+list(
+  color = "secondary",
+  value = "Noah Costa"
+)
 
 
 ```
 
 ```{r}
 #| content: valuebox
-#| title: "Number of days below freezing"
+#| title: "Losing Opponent"
+
+
+list(
+  color = "secondary",
+  value = "Ryan Silver"
+)
+
+
+```
+
+
+```{r}
+#| content: valuebox
+#| title: "Number of states won"
+
+list(
+  color = "secondary",
+  value = "50"
+)
 
 
 ```
