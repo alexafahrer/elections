@@ -96,7 +96,7 @@ list(
 
 
 list(
-  color = "secondary",
+  color = "green",
   value = "Noah Costa"
 )
 
@@ -109,7 +109,7 @@ list(
 
 
 list(
-  color = "secondary",
+  color = "red",
   value = "Ryan Silver"
 )
 
