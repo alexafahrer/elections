@@ -22,7 +22,7 @@ library(usmap)
 #| label: load-data
 #| message: false
 #| include: false
-#| 
+
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 
 ```
@@ -83,9 +83,12 @@ multiply_by_100 <- function(x) {
 
 ```{r}
 #| content: valuebox
-#| title: "Today"
+#| title: "Year"
 
-
+list(
+  color = "secondary",
+  value = "1976"
+)
 
 ```
 
