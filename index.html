@@ -98,32 +98,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(usmap)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>presidents <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/1976-2020-president.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>presidents1 <span class="ot">&lt;-</span> presidents <span class="sc">|&gt;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(party_detailed <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"DEMOCRAT"</span>, <span class="st">"REPUBLICAN"</span>),</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>         candidatevotes <span class="sc">!=</span> <span class="dv">1109659</span>)  <span class="sc">|&gt;</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(party_detailed, year, state, candidatevotes, totalvotes)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>presidents1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(usmap)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>presidents <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/1976-2020-president.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>presidents1 <span class="ot">&lt;-</span> presidents <span class="sc">|&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(party_detailed <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"DEMOCRAT"</span>, <span class="st">"REPUBLICAN"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(party_detailed, year, state, candidatevotes, totalvotes) <span class="sc">|&gt;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">perc_votes =</span> candidatevotes <span class="sc">/</span> totalvotes) <span class="sc">|&gt;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(party_detailed) <span class="sc">|&gt;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, state) <span class="sc">|&gt;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="at">rep_dem_diff =</span> <span class="fu">diff</span>(perc_votes))</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>presidents1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1,224 × 5
-   party_detailed  year state      candidatevotes totalvotes
-   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;      &lt;dbl&gt;
- 1 DEMOCRAT        1976 ALABAMA            659170    1182850
- 2 REPUBLICAN      1976 ALABAMA            504070    1182850
- 3 REPUBLICAN      1976 ALASKA              71555     123574
- 4 DEMOCRAT        1976 ALASKA              44058     123574
- 5 REPUBLICAN      1976 ARIZONA            418642     742719
- 6 DEMOCRAT        1976 ARIZONA            295602     742719
- 7 DEMOCRAT        1976 ARKANSAS           498604     767535
- 8 REPUBLICAN      1976 ARKANSAS           267903     767535
- 9 REPUBLICAN      1976 CALIFORNIA        3882244    7803770
-10 DEMOCRAT        1976 CALIFORNIA        3742284    7803770
-# ℹ 1,214 more rows</code></pre>
+<pre><code># A tibble: 613 × 3
+    year state                rep_dem_diff
+   &lt;dbl&gt; &lt;chr&gt;                       &lt;dbl&gt;
+ 1  1976 ALABAMA                   -0.131 
+ 2  1976 ALASKA                     0.223 
+ 3  1976 ARIZONA                    0.166 
+ 4  1976 ARKANSAS                  -0.301 
+ 5  1976 CALIFORNIA                 0.0179
+ 6  1976 COLORADO                   0.114 
+ 7  1976 CONNECTICUT                0.0515
+ 8  1976 DELAWARE                  -0.0538
+ 9  1976 DISTRICT OF COLUMBIA      -0.651 
+10  1976 FLORIDA                   -0.0528
+# ℹ 603 more rows</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -140,17 +144,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(state) <span class="sc">|&gt;</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(candidatevotes <span class="sc">==</span> <span class="fu">max</span>(candidatevotes)) <span class="sc">|&gt;</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(state_fips, party_simplified) <span class="sc">|&gt;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">fips =</span> state_fips, <span class="at">values =</span> party_simplified)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(state_fips, party_detailed) <span class="sc">|&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">fips =</span> state_fips, <span class="at">values =</span> party_detailed)</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_usmap</span>(<span class="st">"states"</span>, <span class="at">data =</span> map_data) <span class="sc">+</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>))  <span class="sc">+</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(    </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Political Party"</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
