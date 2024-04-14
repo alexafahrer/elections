@@ -15,13 +15,26 @@ library(usmap)
 ```
 
 ```{r}
-#| label: data-wrangling
+#| label: read-data
 
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
-presidentsMin <- presidents |>
-  filter(year == 2000)
 
-presidentsMin
+```
+
+```{r}
+#| label: data-wrangling
+
+presidents_winner <- presidents |>
+  filter(year == 1976, 
+         party_simplified %in% c("DEMOCRAT", "REPUBLICAN"), 
+         state != "DISTRICT OF COLUMBIA") |>
+  group_by(state) |>
+  filter(candidatevotes == max(candidatevotes)) |>
+  ungroup() |>
+  select(year, state, state_fips, candidate, party_simplified) 
+
+presidents_winner |>
+  count(candidate)
 
 presidents1 <- presidents |>
   filter(party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
