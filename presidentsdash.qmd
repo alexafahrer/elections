@@ -115,7 +115,7 @@ red_blue_map_data <- presidents |>
 ### Column {width="40%"}
 
 ```{r}
-#| title: Snow fall (in)
+#| title: Presidential Gradient
 
 plot_usmap("states", data = gradient_map_data) +
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0)
@@ -125,7 +125,7 @@ plot_usmap("states", data = gradient_map_data) +
 ### Column {width="40%"}
 
 ```{r}
-#| title: Snow depth (in)
+#| title: Presidential Winners
 
 plot_usmap("states", data = red_blue_map_data) +
   scale_fill_manual(values = c("blue", "red")) 
