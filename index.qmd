@@ -22,14 +22,11 @@ presidents1 <- presidents |>
   mutate(perc_votes = candidatevotes / totalvotes) |>
   arrange(party_detailed) |>
   group_by(year, state_fips) |>
-  reframe(rep_dem_diff = diff(perc_votes))
-
-
-maps <- presidents1 |>
+  reframe(rep_dem_diff = diff(perc_votes)) |>
   select(-year) |>
   rename(fips = state_fips, values = rep_dem_diff) 
 
-plot_usmap("states", data = maps) +
+plot_usmap("states", data = presidents1) +
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0)
 
 ```
