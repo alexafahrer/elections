@@ -1,0 +1,28 @@
+---
+title: "️US Presidential Elections"
+format: 
+  dashboard:
+    nav-buttons: [github]
+logo: images/logo.png
+fig-width: 10
+fig-asp: 0.3
+---
+
+```{r}
+#| label: load-packages
+#| message: false
+#| include: false
+library(tidyverse)
+library(DT)
+
+```
+
+```{r}
+#| label: load-data
+#| message: false
+#| include: false
+#| 
+presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
+
+```
+
