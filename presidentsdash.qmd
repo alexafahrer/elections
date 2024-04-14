@@ -29,32 +29,21 @@ presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 
 #  {.sidebar}
 
-This dashboard displays weather data for:
+This dashboard displays presidential election data from 1976 to 2020:
 
-**Méribel, [Les Allues](https://en.wikipedia.org/wiki/Les_Allues), Auvergne-Rhône-Alpes, France**
+**MIT Election Data and Science Lab, [MIT Data Lab](https://electionlab.mit.edu/)**
 
-The data were gathered from the [Virtual Crossing](https://www.visualcrossing.com/).
+The data were gathered from the [Harvard Dataverse Database](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX).
 
 <br>
 
-::: {.callout-note collapse="true"}
-## Measurement units
+::: {.callout-note}
+## Plot Notes
 
-The variables and their measurement units are given below.
+This plot represents the popular vote within each state in the presidential
+election from the selected year.
 
-|                                      |                      |
-|:-------------------------------------|:---------------------|
-| **Variable**                         | **Unit** |
-| Temperature, Heat Index & Wind Chill | Degrees Fahrenheit   |
-| Precipitation                        | Inches               |
-| Snow                                 | Inches               |
-| Wind & Wind Gust                     | Miles Per Hour       |
-| Visibility                           | Miles                |
-| Pressure                             | Millibars            |
-| Solar Radiation                      | W/m^2^               |
-| Solar Energy                         | MJ/m^2^              |
-
-Source: [https://www.visualcrossing.com/resources/documentation/weather-api/unit-groups-and-measurement-units](https://www.visualcrossing.com/resources/documentation/weather-api/unit-groups-and-measurement-units/).
+Source: [(https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX)]((https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX)).
 :::
 
 
