@@ -45,7 +45,7 @@ election from the selected year.
 :::
 
 
-# All
+# The Display
 
 ```{r}
 #| include: false
