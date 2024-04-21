@@ -53,7 +53,7 @@ election from the selected year.
 gradient_map_data <- presidents |>
   filter(party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
          state != "DISTRICT OF COLUMBIA", 
-         year == 2000) |>
+         year == 1976) |>
   select(party_simplified, year, state_fips, candidatevotes, totalvotes) |>
   mutate(perc_votes = candidatevotes / totalvotes) |>
   arrange(party_simplified) |>
@@ -171,13 +171,6 @@ plot_usmap("states", data = red_blue_map_data) +
 ### Column {width="20%"}
 
 ```{r}
-red_blue_map_data <- presidents |>
-  filter(year == 1976) |>
-  group_by(state) |>
-  filter(candidatevotes == max(candidatevotes)) |>
-  ungroup() |>
-  select(state_fips, party_detailed) |>
-  rename(fips = state_fips, values = party_detailed)
 
 plot_usmap("states", include = "IA", data = red_blue_map_data, show.legend = FALSE) +
   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
@@ -191,13 +184,6 @@ plot_usmap("states", include = "IA", data = red_blue_map_data, show.legend = FAL
 ### Column {width="20%"}
 
 ```{r}
-red_blue_map_data <- presidents |>
-  filter(year == 1976) |>
-  group_by(state) |>
-  filter(candidatevotes == max(candidatevotes)) |>
-  ungroup() |>
-  select(state_fips, party_detailed) |>
-  rename(fips = state_fips, values = party_detailed)
 
 plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FALSE) +
   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
@@ -211,13 +197,6 @@ plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FAL
 ### Column {width="20%"}
 
 ```{r}
-red_blue_map_data <- presidents |>
-  filter(year == 1976) |>
-  group_by(state) |>
-  filter(candidatevotes == max(candidatevotes)) |>
-  ungroup() |>
-  select(state_fips, party_detailed) |>
-  rename(fips = state_fips, values = party_detailed)
 
 plot_usmap("states", include = "AZ", data = red_blue_map_data, show.legend = FALSE) +
   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
@@ -231,13 +210,6 @@ plot_usmap("states", include = "AZ", data = red_blue_map_data, show.legend = FAL
 ### Column {width="20%"}
 
 ```{r}
-red_blue_map_data <- presidents |>
-  filter(year == 1976) |>
-  group_by(state) |>
-  filter(candidatevotes == max(candidatevotes)) |>
-  ungroup() |>
-  select(state_fips, party_detailed) |>
-  rename(fips = state_fips, values = party_detailed)
 
 plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FALSE) +
   scale_fill_manual(values = c("blue", "red")) +
@@ -246,8 +218,4 @@ plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FAL
     legend.position = "right"
   )
 ```
-
-
-
-
 
