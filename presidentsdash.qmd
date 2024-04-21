@@ -133,8 +133,11 @@ list(
 
 ### Column {width="40%"}
 
-```{r, fig.height = 4, fig.width = 5}
+```{r}
 #| title: Presidential Gradient
+#| fig-height: 4
+#| fig-width: 5
+#| fig-asp: 1
 
 plot_usmap("states", data = gradient_map_data) +
   scale_fill_gradient2(labels = multiply_by_100, low = "blue",
@@ -148,8 +151,11 @@ plot_usmap("states", data = gradient_map_data) +
 
 ### Column {width="40%"}
 
-```{r, fig.height = 4, fig.width = 5}
+```{r}
 #| title: Presidential Winners
+#| fig-height: 4
+#| fig-width: 5
+#| fig-asp: 1
 
 plot_usmap("states", data = red_blue_map_data) +
   scale_fill_manual(values = c("blue", "red")) +
