@@ -85,3 +85,71 @@ plot_usmap("states", data = red_blue_map_data) +
   )
 
 ```
+
+```{r}
+red_blue_map_data <- presidents |>
+  filter(year == 1976) |>
+  group_by(state) |>
+  filter(candidatevotes == max(candidatevotes)) |>
+  ungroup() |>
+  select(state_fips, party_detailed) |>
+  rename(fips = state_fips, values = party_detailed)
+
+plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FALSE) +
+  scale_fill_manual(values = c("blue", "red")) +
+  labs(fill = "Presidential Party") +
+  theme(
+    legend.position = "right"
+  )
+```
+
+```{r}
+red_blue_map_data <- presidents |>
+  filter(year == 1976) |>
+  group_by(state) |>
+  filter(candidatevotes == max(candidatevotes)) |>
+  ungroup() |>
+  select(state_fips, party_detailed) |>
+  rename(fips = state_fips, values = party_detailed)
+
+plot_usmap("states", include = "AZ", data = red_blue_map_data, show.legend = FALSE) +
+  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
+  labs(fill = "Presidential Party") +
+  theme(
+    legend.position = "right"
+  )
+```
+
+```{r}
+red_blue_map_data <- presidents |>
+  filter(year == 1976) |>
+  group_by(state) |>
+  filter(candidatevotes == max(candidatevotes)) |>
+  ungroup() |>
+  select(state_fips, party_detailed) |>
+  rename(fips = state_fips, values = party_detailed)
+
+plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FALSE) +
+  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
+  labs(fill = "Presidential Party") +
+  theme(
+    legend.position = "right"
+  )
+```
+
+```{r}
+red_blue_map_data <- presidents |>
+  filter(year == 1976) |>
+  group_by(state) |>
+  filter(candidatevotes == max(candidatevotes)) |>
+  ungroup() |>
+  select(state_fips, party_detailed) |>
+  rename(fips = state_fips, values = party_detailed)
+
+plot_usmap("states", include = "IA", data = red_blue_map_data, show.legend = FALSE) +
+  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
+  labs(fill = "Presidential Party") +
+  theme(
+    legend.position = "right"
+  )
+```
