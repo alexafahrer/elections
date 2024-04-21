@@ -38,9 +38,9 @@ The data were gathered from the [Harvard Dataverse Database](https://dataverse.h
 <br>
 
 ::: {.callout-note}
-## Plot Notes
+## Plot Note
 
-This plot represents the **popular vote** within each state in the presidential
+These plots represents the **popular vote** within each state in the presidential
 election from the selected year.
 :::
 
@@ -105,7 +105,7 @@ list(
 
 ```{r}
 #| content: valuebox
-#| title: "Losing Opponent"
+#| title: "Losing Candidate"
 
 
 list(
@@ -218,4 +218,7 @@ plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FAL
     legend.position = "right"
   )
 ```
+
+
+# Swing States
 
