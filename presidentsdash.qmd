@@ -133,28 +133,31 @@ list(
 
 ### Column {width="40%"}
 
-```{r}
+```{r, fig.height = 4, fig.width = 5}
 #| title: Presidential Gradient
 
 plot_usmap("states", data = gradient_map_data) +
   scale_fill_gradient2(labels = multiply_by_100, low = "blue",
                        high = "red", mid = "white", midpoint = 0) +
   labs(fill = "Point Differential") +
-  theme(legend.position = "right") +
-  theme(legend.title = element_text(vjust = 1, face = "bold"))
+  theme(legend.position = "right",
+        legend.title = element_text(vjust = 1, face = "bold"),
+        plot.margin = margin(-6, -6, -6, -6))
 
 ```
 
 ### Column {width="40%"}
 
-```{r}
+```{r, fig.height = 4, fig.width = 5}
 #| title: Presidential Winners
 
 plot_usmap("states", data = red_blue_map_data) +
   scale_fill_manual(values = c("blue", "red")) +
   labs(fill = "Presidential Party") +
   theme(
-    legend.position = "right"
+    legend.position = "right",
+    legend.title = element_text(face = "bold"),
+    plot.margin = margin(-6, -6, -6, -6)
   )
 
 ```
