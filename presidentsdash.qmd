@@ -77,7 +77,7 @@ multiply_by_100 <- function(x) {
 ```
 
 
-## Row {height="20%"}
+## Row {height="15%"}
 
 ```{r}
 #| content: valuebox
@@ -137,7 +137,6 @@ list(
 #| title: Presidential Gradient
 #| fig-height: 4
 #| fig-width: 5
-#| fig-asp: 1
 
 plot_usmap("states", data = gradient_map_data) +
   scale_fill_gradient2(labels = multiply_by_100, low = "blue",
@@ -155,7 +154,6 @@ plot_usmap("states", data = gradient_map_data) +
 #| title: Presidential Winners
 #| fig-height: 4
 #| fig-width: 5
-#| fig-asp: 1
 
 plot_usmap("states", data = red_blue_map_data) +
   scale_fill_manual(values = c("blue", "red")) +
@@ -167,3 +165,89 @@ plot_usmap("states", data = red_blue_map_data) +
   )
 
 ```
+
+## Row {height="15%"}
+
+### Column {width="20%"}
+
+```{r}
+red_blue_map_data <- presidents |>
+  filter(year == 1976) |>
+  group_by(state) |>
+  filter(candidatevotes == max(candidatevotes)) |>
+  ungroup() |>
+  select(state_fips, party_detailed) |>
+  rename(fips = state_fips, values = party_detailed)
+
+plot_usmap("states", include = "IA", data = red_blue_map_data, show.legend = FALSE) +
+  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
+  labs(fill = "Presidential Party") +
+  theme(
+    legend.position = "right"
+  )
+```
+
+
+### Column {width="20%"}
+
+```{r}
+red_blue_map_data <- presidents |>
+  filter(year == 1976) |>
+  group_by(state) |>
+  filter(candidatevotes == max(candidatevotes)) |>
+  ungroup() |>
+  select(state_fips, party_detailed) |>
+  rename(fips = state_fips, values = party_detailed)
+
+plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FALSE) +
+  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
+  labs(fill = "Presidential Party") +
+  theme(
+    legend.position = "right"
+  )
+```
+
+
+### Column {width="20%"}
+
+```{r}
+red_blue_map_data <- presidents |>
+  filter(year == 1976) |>
+  group_by(state) |>
+  filter(candidatevotes == max(candidatevotes)) |>
+  ungroup() |>
+  select(state_fips, party_detailed) |>
+  rename(fips = state_fips, values = party_detailed)
+
+plot_usmap("states", include = "AZ", data = red_blue_map_data, show.legend = FALSE) +
+  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
+  labs(fill = "Presidential Party") +
+  theme(
+    legend.position = "right"
+  )
+```
+
+
+### Column {width="20%"}
+
+```{r}
+red_blue_map_data <- presidents |>
+  filter(year == 1976) |>
+  group_by(state) |>
+  filter(candidatevotes == max(candidatevotes)) |>
+  ungroup() |>
+  select(state_fips, party_detailed) |>
+  rename(fips = state_fips, values = party_detailed)
+
+plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FALSE) +
+  scale_fill_manual(values = c("blue", "red")) +
+  labs(fill = "Presidential Party") +
+  theme(
+    legend.position = "right"
+  )
+```
+
+
+
+
+
