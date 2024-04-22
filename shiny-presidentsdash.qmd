@@ -1,8 +1,9 @@
 ---
 title: "️US Presidential Elections"
 format: 
-  dashboard:
-    nav-buttons: [github]
+  html:
+    dashboard:
+      nav-buttons: [github]
 server: shiny
 ---
 
@@ -66,12 +67,11 @@ The data were gathered from the [Harvard Dataverse Database](https://dataverse.h
 
 ```{r}
 #| include: false
-#| context: server
 
 gradient_map_data <- reactive({presidents |>
   filter(party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
          state != "DISTRICT OF COLUMBIA", 
-         year == 1976) |>
+         year == input$input_year) |>
   select(party_simplified, year, state_fips, candidatevotes, totalvotes) |>
   mutate(perc_votes = candidatevotes / totalvotes) |>
   arrange(party_simplified) |>
@@ -82,7 +82,7 @@ gradient_map_data <- reactive({presidents |>
 })
 
 red_blue_map_data <- reactive({residents |>
-  filter(year == 1976) |>
+  filter(year == input$input_year) |>
   group_by(state) |>
   filter(candidatevotes == max(candidatevotes)) |>
   ungroup() |>
@@ -153,7 +153,7 @@ list(
 #| title: Presidential Gradient
 #| context: server
 
-server <- function(input, output, session) 
+# server <- function(input, output, session) 
 output$gradient_map <- renderPlot({plot_usmap("states", data = gradient_map_data()) +
   scale_fill_gradient2(labels = multiply_by_100, low = "blue",
                        high = "red", mid = "white", midpoint = 0) +
@@ -162,6 +162,9 @@ output$gradient_map <- renderPlot({plot_usmap("states", data = gradient_map_data
         legend.title = element_text(vjust = 1, face = "bold"))
 })
 
+```
+
+```{r}
 plotOutput("gradient_map")
 
 ```
@@ -171,77 +174,19 @@ plotOutput("gradient_map")
 ```{r}
 #| title: Presidential Winners
 
-server <- function(input, output, session) 
-output$red_blue_map <- renderPlot({plot_usmap("states", data = red_blue_map_data) +
-  scale_fill_manual(values = c("blue", "red")) +
-  labs(fill = "Presidential Party") +
-  theme(
-    legend.position = "right",
-    legend.title = element_text(face = "bold"))
-})
-
-plotOutput("red_blue_map")
-
-```
-
-```{r}
-## Row {height="15%"}
-
-### Column {width="20%"}
-
-# ```{r}
-# #| title: "Swing State #1: Iowa"
-
-# plot_usmap("states", include = "IA", data = red_blue_map_data, show.legend = FALSE) +
-#   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
-#   labs(fill = "Presidential Party") +
-#   theme(
-#     legend.position = "right"
-#   )
-#```
-
-
-### Column {width="20%"}
-
-# ```{r}
-# #| title: "Swing State #2: North Carolina"
-# 
-# plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FALSE) +
-#   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
-#   labs(fill = "Presidential Party") +
-#   theme(
-#     legend.position = "right"
-#   )
-# ```
-
-
-### Column {width="20%"}
-
-# ```{r}
-# #| title: "Swing State #3: Arizona"
-# 
-# plot_usmap("states", include = "AZ", data = red_blue_map_data, show.legend = FALSE) +
-#   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
-#   labs(fill = "Presidential Party") +
-#   theme(
-#     legend.position = "right"
-#   )
-# ```
-
-
-### Column {width="20%"}
-
-# ```{r}
-# #| title: "Swing State #4: Ohio"
-
-# plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FALSE) +
+#server <- function(input, output, session) 
+# output$red_blue_map <- renderPlot({plot_usmap("states", data = red_blue_map_data()) +
 #   scale_fill_manual(values = c("blue", "red")) +
 #   labs(fill = "Presidential Party") +
 #   theme(
-#     legend.position = "right"
-#   )
-# ```
-``` 
+#     legend.position = "right",
+#     legend.title = element_text(face = "bold"))
+# })
+# 
+# plotOutput("red_blue_map")
+
+```
+
 
 # Swing States
 
