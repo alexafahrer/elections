@@ -59,7 +59,7 @@ MIT Election Data and Science Lab, [MIT Data Lab](https://electionlab.mit.edu/)
 The data were gathered from the [Harvard Dataverse Database](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX).
 
 
-# The Display
+# Home
 
 ```{r}
 #| include: false
@@ -230,4 +230,17 @@ plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FAL
 
 
 # Swing States
+
+# Data
+
+```{r}
+#| label: data
+
+datatable(presidents |>
+            select(year, state, candidate, party_detailed, writein, candidatevotes, totalvotes) |>
+            rowwise() |>
+            mutate(percentage_of_votes = scales::percent(candidatevotes/totalvotes, accuracy = 0.01)))
+
+```
+
 
