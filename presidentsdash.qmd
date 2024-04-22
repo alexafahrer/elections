@@ -14,7 +14,7 @@ library(tidyverse)
 library(DT)
 library(usmap)
 library(shiny)
-
+library(tools)
 ```
 
 ```{r}
@@ -62,7 +62,43 @@ The data were gathered from the [Harvard Dataverse Database](https://dataverse.h
 # Home
 
 ```{r}
+#| label: functions
 #| include: false
+
+reformat_name <- function(name) {
+ parts <- strsplit(name, ", ")[[1]]
+ formatted_name <- paste(trimws(parts[2]), trimws(parts[1]))
+ 
+ text_lower <- tolower(formatted_name)
+ 
+ formatted_name <- toTitleCase(text_lower)
+ 
+ return(formatted_name)
+}
+
+multiply_by_100 <- function(x) {
+  return(paste0(x * 100, " points"))
+}
+
+```
+
+```{r}
+#| label: data-sets-for-plots
+#| include: false
+
+presidents_winner <- presidents |>
+  filter(year == 1976, 
+         party_simplified %in% c("DEMOCRAT", "REPUBLICAN")) |>
+  group_by(state) |>
+  filter(candidatevotes == max(candidatevotes)) |>
+  ungroup() |>
+  select(year, state, state_fips, candidate, party_simplified, candidatevotes, totalvotes) |>
+  group_by(candidate) |>
+  summarize(total_votes = sum(candidatevotes)) |>
+  mutate(perc = total_votes / sum(total_votes)) |>
+  group_by(candidate) |>
+  mutate(candidate = reformat_name(candidate)) |>
+  ungroup()
 
 gradient_map_data <- presidents |>
   filter(party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
@@ -84,9 +120,12 @@ red_blue_map_data <- presidents |>
   select(state_fips, party_detailed) |>
   rename(fips = state_fips, values = party_detailed)
 
-multiply_by_100 <- function(x) {
-  return(paste0(x * 100, " points"))
-}
+swing_states <- presidents |>
+  filter(party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
+         year == 1976) |>
+  mutate(swing_state = if_else(state_po %in% c("NM", "NV", "IA", "FL", "VA", "OK", "TN"), TRUE, FALSE)) |>
+  select(state_fips, swing_state) |>
+  rename(fips = state_fips, values = swing_state)
 
 ```
 
@@ -110,8 +149,25 @@ list(
 
 
 list(
-  color = "green",
-  value = "Noah Costa"
+  color = "blue",
+  value = presidents_winner |>
+    filter(perc == max(perc)) |>
+    pull(candidate)
+)
+
+```
+
+
+```{r}
+#| content: valuebox
+#| title: "Percentage of Popular Vote Won"
+
+list(
+  color = "secondary",
+  value = presidents_winner |>
+    filter(perc == max(perc)) |>
+    mutate(perc = scales::percent(perc, accuracy = 0.1)) |>
+    pull(perc)
 )
 
 ```
@@ -123,19 +179,9 @@ list(
 
 list(
   color = "red",
-  value = "Ryan Silver"
-)
-
-```
-
-
-```{r}
-#| content: valuebox
-#| title: "Number of states won"
-
-list(
-  color = "secondary",
-  value = "50"
+  value = presidents_winner |>
+    filter(perc == min(perc)) |>
+    pull(candidate)
 )
 
 ```
@@ -230,6 +276,31 @@ plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FAL
 
 
 # Swing States
+
+## Row {height="20%"}
+
+```{r}
+#| content: valuebox
+#| title: "Year"
+
+list(
+  color = "secondary",
+  value = "1976"
+)
+
+```
+
+## Row {height="80%"}
+
+```{r}
+plot_usmap("states", data = swing_states) +
+  scale_fill_manual(values = c("gray", "purple")) +
+  labs(fill = "Swing State") +
+  theme(
+    legend.position = "right",
+    legend.title = element_text(face = "bold"))
+```
+
 
 # Data
 
