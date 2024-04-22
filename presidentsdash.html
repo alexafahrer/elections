@@ -41,6 +41,9 @@ ul.task-list li input[type="checkbox"] {
 <script src="presidentsdash_files/libs/quarto-dashboard/web-components.js" type="module"></script>
 <script src="presidentsdash_files/libs/quarto-dashboard/components.js"></script>
 <link href="presidentsdash_files/libs/quarto-dashboard/datatables.min.css" rel="stylesheet" kdttablesentinel="true">
+<link href="presidentsdash_files/libs/selectize-0.15.2/css/selectize.bootstrap3.css" rel="stylesheet">
+<script src="presidentsdash_files/libs/selectize-0.15.2/js/selectize.min.js"></script>
+<script src="presidentsdash_files/libs/selectize-0.15.2/accessibility/js/selectize-plugin-a11y.min.js"></script>
 
 
 </head>
@@ -56,7 +59,7 @@ ul.task-list li input[type="checkbox"] {
 
 
     <div class="navbar-brand-container">       
-    <a href="#"><img src="images/logo.png" alt="" class="navbar-logo d-inline-block"></a>
+
       <div class="navbar-title">
         <div class="navbar-title-text"><a href="#">️US Presidential Elections</a></div>
         
@@ -136,7 +139,7 @@ grid-auto-rows: minmax(0, 1fr);">
 <div class="card-header"><div class="card-title html-fill-item html-fill-container">Presidential Gradient</div></div>
 <div class="card-body html-fill-item html-fill-container">
 <div class="cell-output-display html-fill-item html-fill-container">
-<img src="presidentsdash_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-dashboard-img-contain">
+<img src="presidentsdash_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid quarto-dashboard-img-contain">
 </div>
 </div>
 <bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
@@ -150,7 +153,7 @@ grid-auto-rows: minmax(0, 1fr);">
 <div class="card-header"><div class="card-title html-fill-item html-fill-container">Presidential Winners</div></div>
 <div class="card-body html-fill-item html-fill-container">
 <div class="cell-output-display html-fill-item html-fill-container">
-<img src="presidentsdash_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid quarto-dashboard-img-contain">
+<img src="presidentsdash_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid quarto-dashboard-img-contain">
 </div>
 </div>
 <bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
@@ -168,7 +171,7 @@ grid-auto-rows: minmax(0, 1fr);">
 <div class="card-header"><div class="card-title html-fill-item html-fill-container">Swing State #1: Iowa</div></div>
 <div class="card-body html-fill-item html-fill-container">
 <div class="cell-output-display html-fill-item html-fill-container">
-<img src="presidentsdash_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid quarto-dashboard-img-contain">
+<img src="presidentsdash_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid quarto-dashboard-img-contain">
 </div>
 </div>
 <bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
@@ -182,7 +185,7 @@ grid-auto-rows: minmax(0, 1fr);">
 <div class="card-header"><div class="card-title html-fill-item html-fill-container">Swing State #2: North Carolina</div></div>
 <div class="card-body html-fill-item html-fill-container">
 <div class="cell-output-display html-fill-item html-fill-container">
-<img src="presidentsdash_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid quarto-dashboard-img-contain">
+<img src="presidentsdash_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid quarto-dashboard-img-contain">
 </div>
 </div>
 <bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
@@ -196,7 +199,7 @@ grid-auto-rows: minmax(0, 1fr);">
 <div class="card-header"><div class="card-title html-fill-item html-fill-container">Swing State #3: Arizona</div></div>
 <div class="card-body html-fill-item html-fill-container">
 <div class="cell-output-display html-fill-item html-fill-container">
-<img src="presidentsdash_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid quarto-dashboard-img-contain">
+<img src="presidentsdash_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid quarto-dashboard-img-contain">
 </div>
 </div>
 <bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
@@ -210,7 +213,7 @@ grid-auto-rows: minmax(0, 1fr);">
 <div class="card-header"><div class="card-title html-fill-item html-fill-container">Swing State #4: Ohio</div></div>
 <div class="card-body html-fill-item html-fill-container">
 <div class="cell-output-display html-fill-item html-fill-container">
-<img src="presidentsdash_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid quarto-dashboard-img-contain">
+<img src="presidentsdash_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid quarto-dashboard-img-contain">
 </div>
 </div>
 <bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
@@ -231,9 +234,31 @@ grid-auto-rows: minmax(0, 1fr);">
 </div>
 </div>
 </div></div><aside id="bslib-sidebar-1" class="sidebar html-fill-container html-fill-item"><div class="html-fill-container html-fill-item">
-<p>This dashboard displays presidential election data from 1976 to 2020:</p>
-<p><strong>MIT Election Data and Science Lab, <a href="https://electionlab.mit.edu/">MIT Data Lab</a></strong></p>
-<p>The data were gathered from the <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX">Harvard Dataverse Database</a>.</p>
+<p>This dashboard displays presidential election data from 1976 to 2020.</p>
+<p><br></p>
+<p>Begin by selecting a year to investigate:</p>
+<div class="cell-output-display no-overflow-x">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="input_year-label" for="input_year">
+<strong>Election Year</strong>
+</label>
+<div>
+<select id="input_year" class="shiny-input-select"><option value="1976" selected="">1976</option>
+<option value="1980">1980</option>
+<option value="1984">1984</option>
+<option value="1988">1988</option>
+<option value="1992">1992</option>
+<option value="1996">1996</option>
+<option value="2000">2000</option>
+<option value="2004">2004</option>
+<option value="2008">2008</option>
+<option value="2012">2012</option>
+<option value="2016">2016</option>
+<option value="2020">2020</option></select>
+<script type="application/json" data-for="input_year" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+</div>
+</div>
+</div>
 <p><br></p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -248,6 +273,9 @@ Plot Note
 <p>These plots represents the <strong>popular vote</strong> within each state in the presidential election from the selected year.</p>
 </div>
 </div>
+<p><br></p>
+<p><strong>MIT Election Data and Science Lab, <a href="https://electionlab.mit.edu/">MIT Data Lab</a></strong></p>
+<p>The data were gathered from the <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX">Harvard Dataverse Database</a>.</p>
 </div></aside>
 <button class="collapse-toggle" type="button" title="Toggle sidebar" aria-expanded="true" aria-controls="bslib-sidebar-1">
     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 16 16" class="bi bi-chevron-left collapse-icon" style="fill:currentColor;" aria-hidden="true" role="img">
