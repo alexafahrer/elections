@@ -16,6 +16,7 @@ The files in this folder include:
 - `proposal.qmd`: Includes our plan and intentions for the project so far. 
 - `index.qmd`: Will house our final write-up once the project is completed.
 - `about.qmd`: Includes a description of the team members.
+- `presidentsdash.qmd`: Our final dashboard.
 - Data Folder: this has our data for the project thus far. 
 
 
