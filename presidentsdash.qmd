@@ -29,8 +29,7 @@ presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 #  {.sidebar}
 
 This dashboard displays presidential election data from 1976 to 2020. 
-
-<br>
+<hr>
 
 Begin by selecting a year to investigate:
 ```{r}
@@ -44,7 +43,7 @@ selectInput(inputId = "input_year",
 
 ```
 
-<br>
+<hr>
 
 ::: {.callout-note}
 ## Plot Note
@@ -55,7 +54,7 @@ election from the selected year.
 
 <br>
 
-**MIT Election Data and Science Lab, [MIT Data Lab](https://electionlab.mit.edu/)**
+MIT Election Data and Science Lab, [MIT Data Lab](https://electionlab.mit.edu/)
 
 The data were gathered from the [Harvard Dataverse Database](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX).
 
@@ -115,7 +114,6 @@ list(
   value = "Noah Costa"
 )
 
-
 ```
 
 ```{r}
@@ -127,7 +125,6 @@ list(
   color = "red",
   value = "Ryan Silver"
 )
-
 
 ```
 
@@ -141,103 +138,96 @@ list(
   value = "50"
 )
 
-
 ```
 
 ## Row {height="40%"}
 
-### Column {width="40%"}
+### Column {width="40%", .fill}
 
 ```{r}
 #| title: Presidential Gradient
-#| fig-height: 4
-#| fig-width: 5
 
 plot_usmap("states", data = gradient_map_data) +
   scale_fill_gradient2(labels = multiply_by_100, low = "blue",
                        high = "red", mid = "white", midpoint = 0) +
   labs(fill = "Point Differential") +
   theme(legend.position = "right",
-        legend.title = element_text(vjust = 1, face = "bold"),
-        plot.margin = margin(-6, -6, -6, -6))
+        legend.title = element_text(vjust = 1, face = "bold"))
 
 ```
 
-### Column {width="40%"}
+### Column {width="40%", .fill}
 
 ```{r}
 #| title: Presidential Winners
-#| fig-height: 4
-#| fig-width: 5
 
 plot_usmap("states", data = red_blue_map_data) +
   scale_fill_manual(values = c("blue", "red")) +
   labs(fill = "Presidential Party") +
   theme(
     legend.position = "right",
-    legend.title = element_text(face = "bold"),
-    plot.margin = margin(-6, -6, -6, -6)
-  )
+    legend.title = element_text(face = "bold"))
 
 ```
 
+```{r}
 ## Row {height="15%"}
 
 ### Column {width="20%"}
 
-```{r}
-#| title: "Swing State #1: Iowa"
+# ```{r}
+# #| title: "Swing State #1: Iowa"
 
-plot_usmap("states", include = "IA", data = red_blue_map_data, show.legend = FALSE) +
-  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
-  labs(fill = "Presidential Party") +
-  theme(
-    legend.position = "right"
-  )
-```
-
-
-### Column {width="20%"}
-
-```{r}
-#| title: "Swing State #2: North Carolina"
-
-plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FALSE) +
-  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
-  labs(fill = "Presidential Party") +
-  theme(
-    legend.position = "right"
-  )
-```
+# plot_usmap("states", include = "IA", data = red_blue_map_data, show.legend = FALSE) +
+#   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
+#   labs(fill = "Presidential Party") +
+#   theme(
+#     legend.position = "right"
+#   )
+#```
 
 
 ### Column {width="20%"}
 
-```{r}
-#| title: "Swing State #3: Arizona"
-
-plot_usmap("states", include = "AZ", data = red_blue_map_data, show.legend = FALSE) +
-  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
-  labs(fill = "Presidential Party") +
-  theme(
-    legend.position = "right"
-  )
-```
+# ```{r}
+# #| title: "Swing State #2: North Carolina"
+# 
+# plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FALSE) +
+#   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
+#   labs(fill = "Presidential Party") +
+#   theme(
+#     legend.position = "right"
+#   )
+# ```
 
 
 ### Column {width="20%"}
 
-```{r}
-#| title: "Swing State #4: Ohio"
+# ```{r}
+# #| title: "Swing State #3: Arizona"
+# 
+# plot_usmap("states", include = "AZ", data = red_blue_map_data, show.legend = FALSE) +
+#   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
+#   labs(fill = "Presidential Party") +
+#   theme(
+#     legend.position = "right"
+#   )
+# ```
 
-plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FALSE) +
-  scale_fill_manual(values = c("blue", "red")) +
-  labs(fill = "Presidential Party") +
-  theme(
-    legend.position = "right"
-  )
-```
 
+### Column {width="20%"}
+
+# ```{r}
+# #| title: "Swing State #4: Ohio"
+
+# plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FALSE) +
+#   scale_fill_manual(values = c("blue", "red")) +
+#   labs(fill = "Presidential Party") +
+#   theme(
+#     legend.position = "right"
+#   )
+# ```
+``` 
 
 # Swing States
 
