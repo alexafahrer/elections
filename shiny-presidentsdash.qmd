@@ -8,7 +8,7 @@ server: shiny
 ---
 
 ```{r}
-#| label: load-packages
+#| label: load-packages-and-data
 #| message: false
 #| include: false
 
@@ -16,14 +16,7 @@ library(tidyverse)
 library(DT)
 library(usmap)
 library(shiny)
-library(rmarkdown)
-
-```
-
-```{r}
-#| label: load-data
-#| message: false
-#| include: false
+library(tools)
 
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 
@@ -63,10 +56,52 @@ MIT Election Data and Science Lab, [MIT Data Lab](https://electionlab.mit.edu/)
 The data were gathered from the [Harvard Dataverse Database](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX).
 
 
-# The Display
+# Home
 
 ```{r}
+#| label: functions
 #| include: false
+
+reformat_name <- function(name) {
+ parts <- strsplit(name, ", ")[[1]]
+ formatted_name <- paste(trimws(parts[2]), trimws(parts[1]))
+ text_lower <- tolower(formatted_name)
+ formatted_name <- toTitleCase(text_lower)
+ return(formatted_name)
+}
+
+lower_case <- function(name) {
+  text_lower <- tolower(name)
+  formatted_name <- toTitleCase(text_lower)
+  return(formatted_name)
+}
+
+multiply_by_100 <- function(x) {
+  return(paste0(x * 100, " points"))
+}
+
+```
+
+```{r}
+#| label: data-sets-for-plots
+#| include: false
+
+# this is where we are using the user input to filter the data sets by year
+
+presidents_winner <- reactive({presidents |>
+  filter(year == input$input_year, 
+         party_simplified %in% c("DEMOCRAT", "REPUBLICAN")) |>
+  group_by(state) |>
+  filter(candidatevotes == max(candidatevotes)) |>
+  ungroup() |>
+  select(year, state, state_fips, candidate, party_simplified, candidatevotes, totalvotes) |>
+  group_by(candidate) |>
+  summarize(total_votes = sum(candidatevotes)) |>
+  mutate(perc = total_votes / sum(total_votes)) |>
+  group_by(candidate) |>
+  mutate(candidate = reformat_name(candidate)) |>
+  ungroup()
+})
 
 gradient_map_data <- reactive({presidents |>
   filter(party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
@@ -90,9 +125,13 @@ red_blue_map_data <- reactive({residents |>
   rename(fips = state_fips, values = party_detailed)
 })
 
-multiply_by_100 <- function(x) {
-  return(paste0(x * 100, " points"))
-}
+swing_states <- reactive({presidents |>
+  filter(party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
+         year == input$input_year) |>
+  mutate(swing_state = if_else(state_po %in% c("NM", "NV", "IA", "FL", "VA", "OK", "TN"), TRUE, FALSE)) |>
+  select(state_fips, swing_state) |>
+  rename(fips = state_fips, values = swing_state)
+})
 
 ```
 
@@ -113,11 +152,29 @@ list(
 ```{r}
 #| content: valuebox
 #| title: "Popular Vote Winner"
-
+#| context: server
 
 list(
-  color = "green",
-  value = "Noah Costa"
+  color = "blue",
+  value = presidents_winner() |>
+    filter(perc == max(perc)) |>
+    pull(candidate)
+)
+
+```
+
+
+```{r}
+#| content: valuebox
+#| title: "Percentage of Popular Vote Won"
+#| context: server
+
+list(
+  color = "secondary",
+  value = presidents_winner() |>
+    filter(perc == max(perc)) |>
+    mutate(perc = scales::percent(perc, accuracy = 0.1)) |>
+    pull(perc)
 )
 
 ```
@@ -125,22 +182,13 @@ list(
 ```{r}
 #| content: valuebox
 #| title: "Losing Candidate"
+#| context: server
 
 list(
   color = "red",
-  value = "Ryan Silver"
-)
-
-```
-
-
-```{r}
-#| content: valuebox
-#| title: "Number of states won"
-
-list(
-  color = "secondary",
-  value = "50"
+  value = presidents_winner() |>
+    filter(perc == min(perc)) |>
+    pull(candidate)
 )
 
 ```
@@ -150,10 +198,11 @@ list(
 ### Column {width="40%", .fill}
 
 ```{r}
-#| title: Presidential Gradient
 #| context: server
 
 # server <- function(input, output, session) 
+# ^ not sure if this is needed or not 
+
 output$gradient_map <- renderPlot({plot_usmap("states", data = gradient_map_data()) +
   scale_fill_gradient2(labels = multiply_by_100, low = "blue",
                        high = "red", mid = "white", midpoint = 0) +
@@ -165,6 +214,8 @@ output$gradient_map <- renderPlot({plot_usmap("states", data = gradient_map_data
 ```
 
 ```{r}
+#| title: Presidential Gradient
+
 plotOutput("gradient_map")
 
 ```
@@ -174,7 +225,7 @@ plotOutput("gradient_map")
 ```{r}
 #| title: Presidential Winners
 
-#server <- function(input, output, session) 
+# server <- function(input, output, session) 
 # output$red_blue_map <- renderPlot({plot_usmap("states", data = red_blue_map_data()) +
 #   scale_fill_manual(values = c("blue", "red")) +
 #   labs(fill = "Presidential Party") +
@@ -187,6 +238,133 @@ plotOutput("gradient_map")
 
 ```
 
+## Row {height="15%"}
+
+### Column {width="20%"}
+
+```{r}
+#| title: "Swing State #1: Iowa"
+#| context: server
+
+plot_usmap("states", include = "IA", data = red_blue_map_data(), show.legend = FALSE) +
+   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) 
+
+```
+
+
+### Column {width="20%"}
+
+```{r}
+#| title: "Swing State #2: North Carolina"
+#| context: server 
+
+plot_usmap("states", include = "NC", data = red_blue_map_data(), show.legend = FALSE) +
+   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) 
+
+```
+
+
+### Column {width="20%"}
+
+```{r}
+#| title: "Swing State #3: Arizona"
+#| context: server 
+
+ plot_usmap("states", include = "AZ", data = red_blue_map_data(), show.legend = FALSE) +
+   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) 
+
+```
+
+
+### Column {width="20%"}
+
+```{r}
+#| title: "Swing State #4: Ohio"
+#| context: server
+
+plot_usmap("states", include = "OH", data = red_blue_map_data(), show.legend = FALSE) +
+  scale_fill_manual(values = c("blue", "red")) 
+
+```
+
+### Column {width="20%"}
+
+```{r}
+#| title: "Swing State #5: Florida"
+#| context: server
+
+plot_usmap("states", include = "FL", data = red_blue_map_data(), show.legend = FALSE) +
+  scale_fill_manual(values = c("blue", "red")) 
+
+```
+
 
 # Swing States
+
+## Row {height="20%"}
+
+### Column {width="20%"}
+
+```{r}
+#| content: valuebox
+#| title: "Year"
+
+list(
+  color = "secondary",
+  value = "1976"
+)
+
+```
+
+### Column {width="80%"}
+
+```{r}
+#| content: valuebox
+#| title: "Question"
+
+# NEED TO DO: make text smaller
+
+list(
+  color = "secondary",
+  value = "What states are swing states in each election year?"
+)
+
+```
+
+## Row {height="80%"}
+
+```{r}
+#| context: server
+
+plot_usmap("states", data = swing_states()) +
+  scale_fill_manual(values = c("gray", "purple")) +
+  labs(fill = "Swing State") +
+  theme(
+    legend.position = "right",
+    legend.title = element_text(face = "bold"))
+```
+
+
+# Data
+
+```{r}
+#| label: data-table
+
+presidents_datatable <- presidents |>
+  select(year, state, candidate, party_detailed, writein, candidatevotes, totalvotes) |>
+  rowwise() |>
+  mutate(percentage_of_votes = scales::percent(candidatevotes/totalvotes, accuracy = 0.01), 
+         state = lower_case(state), 
+         #candidate = reformat_name(candidate), 
+         party_detailed = lower_case(party_detailed), 
+         writein = lower_case(writein)) |>
+  rename("Year" = "year", "State" = "state", "Candidate Name" = "candidate", 
+         "Political Party" = "party_detailed", "Write In?" = "writein", 
+         "Candidate Votes" = "candidatevotes", "Total State Votes" = "totalvotes", 
+         "Percentage of Total Vote in State" = "percentage_of_votes")
+  
+
+datatable(presidents_datatable)
+
+```
 

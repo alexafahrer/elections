@@ -6,7 +6,7 @@ format:
 ---
 
 ```{r}
-#| label: load-packages
+#| label: load-packages-and-data
 #| message: false
 #| include: false
 
@@ -15,12 +15,6 @@ library(DT)
 library(usmap)
 library(shiny)
 library(tools)
-```
-
-```{r}
-#| label: load-data
-#| message: false
-#| include: false
 
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 
@@ -33,6 +27,7 @@ This dashboard displays presidential election data from 1976 to 2020.
 
 Begin by selecting a year to investigate:
 ```{r}
+#| label: user-input
 
 selectInput(inputId = "input_year", 
             label = strong("Election Year"),
@@ -68,12 +63,15 @@ The data were gathered from the [Harvard Dataverse Database](https://dataverse.h
 reformat_name <- function(name) {
  parts <- strsplit(name, ", ")[[1]]
  formatted_name <- paste(trimws(parts[2]), trimws(parts[1]))
- 
  text_lower <- tolower(formatted_name)
- 
  formatted_name <- toTitleCase(text_lower)
- 
  return(formatted_name)
+}
+
+lower_case <- function(name) {
+  text_lower <- tolower(name)
+  formatted_name <- toTitleCase(text_lower)
+  return(formatted_name)
 }
 
 multiply_by_100 <- function(x) {
@@ -225,11 +223,8 @@ plot_usmap("states", data = red_blue_map_data) +
 #| title: "Swing State #1: Iowa"
 
 plot_usmap("states", include = "IA", data = red_blue_map_data, show.legend = FALSE) +
-   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
-   labs(fill = "Presidential Party") +
-   theme(
-     legend.position = "right"
-   )
+   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) 
+
 ```
 
 
@@ -239,11 +234,8 @@ plot_usmap("states", include = "IA", data = red_blue_map_data, show.legend = FAL
 #| title: "Swing State #2: North Carolina"
  
 plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FALSE) +
-   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
-   labs(fill = "Presidential Party") +
-   theme(
-     legend.position = "right"
-   )
+   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) 
+
 ```
 
 
@@ -253,11 +245,8 @@ plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FAL
 #| title: "Swing State #3: Arizona"
  
  plot_usmap("states", include = "AZ", data = red_blue_map_data, show.legend = FALSE) +
-   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) +
-   labs(fill = "Presidential Party") +
-   theme(
-     legend.position = "right"
-   )
+   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) 
+
 ```
 
 
@@ -267,17 +256,26 @@ plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FAL
 #| title: "Swing State #4: Ohio"
 
 plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FALSE) +
-  scale_fill_manual(values = c("blue", "red")) +
-  labs(fill = "Presidential Party") +
-  theme(
-    legend.position = "right"
-  )
+  scale_fill_manual(values = c("blue", "red")) 
+
+```
+
+### Column {width="20%"}
+
+```{r}
+#| title: "Swing State #5: Florida"
+
+plot_usmap("states", include = "FL", data = red_blue_map_data, show.legend = FALSE) +
+  scale_fill_manual(values = c("blue", "red")) 
+
 ```
 
 
 # Swing States
 
 ## Row {height="20%"}
+
+### Column {width="20%"}
 
 ```{r}
 #| content: valuebox
@@ -286,6 +284,21 @@ plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FAL
 list(
   color = "secondary",
   value = "1976"
+)
+
+```
+
+### Column {width="80%"}
+
+```{r}
+#| content: valuebox
+#| title: "Question"
+
+# NEED TO DO: make text smaller
+
+list(
+  color = "secondary",
+  value = "What states are swing states in each election year?"
 )
 
 ```
@@ -305,13 +318,22 @@ plot_usmap("states", data = swing_states) +
 # Data
 
 ```{r}
-#| label: data
+#| label: data-table
 
-datatable(presidents |>
-            select(year, state, candidate, party_detailed, writein, candidatevotes, totalvotes) |>
-            rowwise() |>
-            mutate(percentage_of_votes = scales::percent(candidatevotes/totalvotes, accuracy = 0.01)))
+presidents_datatable <- presidents |>
+  select(year, state, candidate, party_detailed, writein, candidatevotes, totalvotes) |>
+  rowwise() |>
+  mutate(percentage_of_votes = scales::percent(candidatevotes/totalvotes, accuracy = 0.01), 
+         state = lower_case(state), 
+         #candidate = reformat_name(candidate), 
+         party_detailed = lower_case(party_detailed), 
+         writein = lower_case(writein)) |>
+  rename("Year" = "year", "State" = "state", "Candidate Name" = "candidate", 
+         "Political Party" = "party_detailed", "Write In?" = "writein", 
+         "Candidate Votes" = "candidatevotes", "Total State Votes" = "totalvotes", 
+         "Percentage of Total Vote in State" = "percentage_of_votes")
+  
+
+datatable(presidents_datatable)
 
 ```
-
-
