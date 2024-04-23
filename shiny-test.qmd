@@ -7,6 +7,13 @@ server: shiny
 ---
 
 ```{r}
+# https://github.com/quarto-dev/quarto-cli/issues/4105 
+# https://github.com/rstudio/rstudio/issues/14039 
+# https://quarto.org/docs/interactive/shiny/execution.html 
+```
+
+
+```{r}
 #| label: load-packages-and-data
 #| context: setup
 #| include: false
