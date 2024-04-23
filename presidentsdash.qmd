@@ -17,7 +17,6 @@ library(shiny)
 library(tools)
 
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
-
 ```
 
 #  {.sidebar}
@@ -29,13 +28,14 @@ Begin by selecting a year to investigate:
 ```{r}
 #| label: user-input
 
-selectInput(inputId = "input_year", 
-            label = strong("Election Year"),
-            choices = unique(presidents$year),
-            selected = 1976)
+selectInput(
+  inputId = "input_year",
+  label = strong("Election Year"),
+  choices = unique(presidents$year),
+  selected = 1976
+)
 
 # https://quarto.org/docs/interactive/
-
 ```
 
 <hr>
@@ -61,11 +61,11 @@ The data were gathered from the [Harvard Dataverse Database](https://dataverse.h
 #| include: false
 
 reformat_name <- function(name) {
- parts <- strsplit(name, ", ")[[1]]
- formatted_name <- paste(trimws(parts[2]), trimws(parts[1]))
- text_lower <- tolower(formatted_name)
- formatted_name <- toTitleCase(text_lower)
- return(formatted_name)
+  parts <- strsplit(name, ", ")[[1]]
+  formatted_name <- paste(trimws(parts[2]), trimws(parts[1]))
+  text_lower <- tolower(formatted_name)
+  formatted_name <- toTitleCase(text_lower)
+  return(formatted_name)
 }
 
 lower_case <- function(name) {
@@ -77,7 +77,6 @@ lower_case <- function(name) {
 multiply_by_100 <- function(x) {
   return(paste0(x * 100, " points"))
 }
-
 ```
 
 ```{r}
@@ -85,8 +84,10 @@ multiply_by_100 <- function(x) {
 #| include: false
 
 presidents_winner <- presidents |>
-  filter(year == 1976, 
-         party_simplified %in% c("DEMOCRAT", "REPUBLICAN")) |>
+  filter(
+    year == 1976,
+    party_simplified %in% c("DEMOCRAT", "REPUBLICAN")
+  ) |>
   group_by(state) |>
   filter(candidatevotes == max(candidatevotes)) |>
   ungroup() |>
@@ -99,16 +100,18 @@ presidents_winner <- presidents |>
   ungroup()
 
 gradient_map_data <- presidents |>
-  filter(party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
-         state != "DISTRICT OF COLUMBIA", 
-         year == 1976) |>
+  filter(
+    party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
+    state != "DISTRICT OF COLUMBIA",
+    year == 1976
+  ) |>
   select(party_simplified, year, state_fips, candidatevotes, totalvotes) |>
   mutate(perc_votes = candidatevotes / totalvotes) |>
   arrange(party_simplified) |>
   group_by(year, state_fips) |>
   reframe(rep_dem_diff = diff(perc_votes)) |>
   select(-year) |>
-  rename(fips = state_fips, values = rep_dem_diff) 
+  rename(fips = state_fips, values = rep_dem_diff)
 
 red_blue_map_data <- presidents |>
   filter(year == 1976) |>
@@ -119,12 +122,13 @@ red_blue_map_data <- presidents |>
   rename(fips = state_fips, values = party_detailed)
 
 swing_states <- presidents |>
-  filter(party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
-         year == 1976) |>
+  filter(
+    party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
+    year == 1976
+  ) |>
   mutate(swing_state = if_else(state_po %in% c("NM", "NV", "IA", "FL", "VA", "OK", "TN"), TRUE, FALSE)) |>
   select(state_fips, swing_state) |>
   rename(fips = state_fips, values = swing_state)
-
 ```
 
 
@@ -138,13 +142,11 @@ list(
   color = "secondary",
   value = "1976"
 )
-
 ```
 
 ```{r}
 #| content: valuebox
 #| title: "Popular Vote Winner"
-
 
 list(
   color = "blue",
@@ -152,7 +154,6 @@ list(
     filter(perc == max(perc)) |>
     pull(candidate)
 )
-
 ```
 
 
@@ -167,7 +168,6 @@ list(
     mutate(perc = scales::percent(perc, accuracy = 0.1)) |>
     pull(perc)
 )
-
 ```
 
 ```{r}
@@ -181,7 +181,6 @@ list(
     filter(perc == min(perc)) |>
     pull(candidate)
 )
-
 ```
 
 ## Row {height="40%"}
@@ -192,14 +191,17 @@ list(
 #| title: Presidential Gradient
 
 plot_usmap("states", data = gradient_map_data) +
-  scale_fill_gradient2(labels = multiply_by_100, low = "blue",
-                       high = "red", mid = "white", midpoint = 0) +
+  scale_fill_gradient2(
+    labels = multiply_by_100, low = "blue",
+    high = "red", mid = "white", midpoint = 0
+  ) +
   labs(fill = "Point Differential") +
-  theme(legend.position = "right",
-        legend.title = element_text(vjust = 1, face = "bold", size = 14), 
-        legend.key.size = unit(1.2, "cm"), 
-        legend.text = element_text(size = 12))
-
+  theme(
+    legend.position = "right",
+    legend.title = element_text(vjust = 1, face = "bold", size = 14),
+    legend.key.size = unit(1.2, "cm"),
+    legend.text = element_text(size = 12)
+  )
 ```
 
 ### Column {width="40%", .fill}
@@ -210,11 +212,12 @@ plot_usmap("states", data = gradient_map_data) +
 plot_usmap("states", data = red_blue_map_data) +
   scale_fill_manual(values = c("blue", "red"), labels = lower_case) +
   labs(fill = "Presidential Party") +
-  theme(legend.position = "right",
-        legend.title = element_text(vjust = 1, face = "bold", size = 14), 
-        legend.key.size = unit(1.2, "cm"), 
-        legend.text = element_text(size = 12))
-
+  theme(
+    legend.position = "right",
+    legend.title = element_text(vjust = 1, face = "bold", size = 14),
+    legend.key.size = unit(1.2, "cm"),
+    legend.text = element_text(size = 12)
+  )
 ```
 
 
@@ -226,8 +229,7 @@ plot_usmap("states", data = red_blue_map_data) +
 #| title: "Swing State #1: Iowa"
 
 plot_usmap("states", include = "IA", data = red_blue_map_data, show.legend = FALSE) +
-   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) 
-
+  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red"))
 ```
 
 
@@ -235,10 +237,9 @@ plot_usmap("states", include = "IA", data = red_blue_map_data, show.legend = FAL
 
 ```{r}
 #| title: "Swing State #2: North Carolina"
- 
-plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FALSE) +
-   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) 
 
+plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FALSE) +
+  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red"))
 ```
 
 
@@ -246,10 +247,9 @@ plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FAL
 
 ```{r}
 #| title: "Swing State #3: Arizona"
- 
- plot_usmap("states", include = "AZ", data = red_blue_map_data, show.legend = FALSE) +
-   scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red")) 
 
+plot_usmap("states", include = "AZ", data = red_blue_map_data, show.legend = FALSE) +
+  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red"))
 ```
 
 
@@ -259,8 +259,7 @@ plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FAL
 #| title: "Swing State #4: Ohio"
 
 plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FALSE) +
-  scale_fill_manual(values = c("blue", "red")) 
-
+  scale_fill_manual(values = c("blue", "red"))
 ```
 
 ### Column {width="20%"}
@@ -269,8 +268,7 @@ plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FAL
 #| title: "Swing State #5: Florida"
 
 plot_usmap("states", include = "FL", data = red_blue_map_data, show.legend = FALSE) +
-  scale_fill_manual(values = c("blue", "red")) 
-
+  scale_fill_manual(values = c("blue", "red"))
 ```
 
 
@@ -288,7 +286,6 @@ list(
   color = "secondary",
   value = "1976"
 )
-
 ```
 
 ### Column {width="80%"}
@@ -303,7 +300,6 @@ list(
   color = "secondary",
   value = "What states are swing states in each election year?"
 )
-
 ```
 
 ## Row {height="80%"}
@@ -314,7 +310,8 @@ plot_usmap("states", data = swing_states) +
   labs(fill = "Swing State") +
   theme(
     legend.position = "right",
-    legend.title = element_text(face = "bold"))
+    legend.title = element_text(face = "bold")
+  )
 ```
 
 
@@ -326,17 +323,20 @@ plot_usmap("states", data = swing_states) +
 presidents_datatable <- presidents |>
   select(year, state, candidate, party_detailed, writein, candidatevotes, totalvotes) |>
   rowwise() |>
-  mutate(percentage_of_votes = scales::percent(candidatevotes/totalvotes, accuracy = 0.01), 
-         state = lower_case(state), 
-         #candidate = reformat_name(candidate), 
-         party_detailed = lower_case(party_detailed), 
-         writein = lower_case(writein)) |>
-  rename("Year" = "year", "State" = "state", "Candidate Name" = "candidate", 
-         "Political Party" = "party_detailed", "Write In?" = "writein", 
-         "Candidate Votes" = "candidatevotes", "Total State Votes" = "totalvotes", 
-         "Percentage of Total Vote in State" = "percentage_of_votes")
-  
+  mutate(
+    percentage_of_votes = scales::percent(candidatevotes / totalvotes, accuracy = 0.01),
+    state = lower_case(state),
+    # candidate = reformat_name(candidate),
+    party_detailed = lower_case(party_detailed),
+    writein = lower_case(writein)
+  ) |>
+  rename(
+    "Year" = "year", "State" = "state", "Candidate Name" = "candidate",
+    "Political Party" = "party_detailed", "Write In?" = "writein",
+    "Candidate Votes" = "candidatevotes", "Total State Votes" = "totalvotes",
+    "Percentage of Total Vote in State" = "percentage_of_votes"
+  )
+
 
 datatable(presidents_datatable)
-
 ```
