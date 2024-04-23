@@ -8,7 +8,7 @@ server: shiny
 
 ```{r}
 #| label: load-packages-and-data
-#| message: false
+#| context: setup
 #| include: false
 
 library(tidyverse)
@@ -16,16 +16,20 @@ library(DT)
 library(usmap)
 library(shiny)
 library(tools)
+```
+
+```{r}
+#| context: data
+#| cache: true
 
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 ```
 
 # Home
 
-## Row {height="85%"}
+## Row {height="55%"}
 
 ```{r}
-#| label: input
 
 selectInput(
   inputId = "input_year",
@@ -33,5 +37,24 @@ selectInput(
   choices = unique(presidents$year),
   selected = 1976
 )
+
+ui <- fluidPage(
+  mainPanel(
+    textOutput(outputId = "selected_year"),
+  )
+)
 ```
 
+## Row {height="50%"} 
+
+```{r}
+#| context: server
+
+server <- function(input, output, session) {
+  output$selected_year <- reactive({
+   paste("You chose:", input$input_year)
+  })
+}
+
+shinyApp(ui = ui, server = server)
+```
