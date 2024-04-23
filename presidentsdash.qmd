@@ -196,7 +196,9 @@ plot_usmap("states", data = gradient_map_data) +
                        high = "red", mid = "white", midpoint = 0) +
   labs(fill = "Point Differential") +
   theme(legend.position = "right",
-        legend.title = element_text(vjust = 1, face = "bold"))
+        legend.title = element_text(vjust = 1, face = "bold", size = 14), 
+        legend.key.size = unit(1.2, "cm"), 
+        legend.text = element_text(size = 12))
 
 ```
 
@@ -206,11 +208,12 @@ plot_usmap("states", data = gradient_map_data) +
 #| title: Presidential Winners
 
 plot_usmap("states", data = red_blue_map_data) +
-  scale_fill_manual(values = c("blue", "red")) +
+  scale_fill_manual(values = c("blue", "red"), labels = lower_case) +
   labs(fill = "Presidential Party") +
-  theme(
-    legend.position = "right",
-    legend.title = element_text(face = "bold"))
+  theme(legend.position = "right",
+        legend.title = element_text(vjust = 1, face = "bold", size = 14), 
+        legend.key.size = unit(1.2, "cm"), 
+        legend.text = element_text(size = 12))
 
 ```
 
