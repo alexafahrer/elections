@@ -28,6 +28,7 @@ This dashboard displays presidential election data from 1976 to 2020.
 Begin by selecting a year to investigate:
 ```{r}
 #| label: input
+#| context: server
 
 selectInput(
   inputId = "input_year",
@@ -35,8 +36,6 @@ selectInput(
   choices = unique(presidents$year),
   selected = 1976
 )
-
-# https://quarto.org/docs/interactive/
 ```
 
 <hr>
@@ -148,10 +147,11 @@ swing_states <- reactive({
 ```{r}
 #| content: valuebox
 #| title: "Year"
+#| context: server
 
 list(
   color = "secondary",
-  value = "1976"
+  value = input$input_year
 )
 ```
 
@@ -365,7 +365,6 @@ presidents_datatable <- presidents |>
     "Candidate Votes" = "candidatevotes", "Total State Votes" = "totalvotes",
     "Percentage of Total Vote in State" = "percentage_of_votes"
   )
-
 
 datatable(presidents_datatable)
 ```
