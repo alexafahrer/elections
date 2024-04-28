@@ -128,6 +128,20 @@ swing_states <- presidents |>
   mutate(swing_state = if_else(state_po %in% c("NM", "NV", "IA", "FL", "VA", "OK", "TN"), TRUE, FALSE)) |>
   select(state_fips, swing_state) |>
   rename(fips = state_fips, values = swing_state)
+
+#1976: 
+#1980:
+#1984:
+#1988: c("NV", "AZ", "WI", "MI", "PA", "NC", "GA")
+#1992: c("NV", "AZ", "MT", "OH", "NH", "NJ", "NC", "GA", "FL")
+#1996: c("NV", "AZ", "MT", "CO", "KY", "VA", "TN", "GA")
+#2000: c("OR", "NM", "MN", "IA", "WI", "NH", "FL")
+#2004: c("NV", "NM", "IA", "WI", "OH", "PA", "NH")
+#2008: c("MT", "MO", "IN", "NC", "FL")
+#2012: c("OH", "NC", "FL")
+#2016: c("NV", "MN", "WI", "MI", "PA", "NH", "ME", "FL")
+#2020: c("NV", "AZ", "WI", "MI", "PA", "NC", "GA")
+# https://usafacts.org/articles/what-are-the-current-swing-states-and-how-have-they-changed-over-time/ 
 ```
 
 
@@ -266,6 +280,7 @@ plot_usmap("states", include = "FL", data = red_blue_map_data, show.legend = FAL
 ```
 
 # Swing States
+
 
 ## Row {height="20%"}
 
