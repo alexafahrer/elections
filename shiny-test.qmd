@@ -1,8 +1,6 @@
 ---
 title: "️US Presidential Elections"
-format: 
-  dashboard:
-    nav-buttons: [github]
+format: html
 server: shiny
 ---
 
@@ -14,54 +12,50 @@ server: shiny
 
 
 ```{r}
-#| label: load-packages-and-data
 #| context: setup
-#| include: false
 
 library(tidyverse)
 library(DT)
-library(usmap)
 library(shiny)
-library(tools)
+
+presidents <- read_csv("~/R/project-2-team_ella/data/1976-2020-president.csv", show_col_types = FALSE)
 ```
 
-```{r}
-#| context: data
-#| cache: true
-
-presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
-```
-
-# Home
-
-## Row {height="55%"}
 
 ```{r}
 
 selectInput(
-  inputId = "input_year",
-  label = strong("Election Year"),
-  choices = unique(presidents$year),
-  selected = 1976
-)
-
-ui <- fluidPage(
-  mainPanel(
-    textOutput(outputId = "selected_year"),
+    inputId = "input_year",
+    label = strong("Election Year"),
+    choices = unique(presidents$year),
+    selected = 2000
   )
-)
 ```
 
-## Row {height="50%"} 
+# Data
+
+```{r}
+tableOutput('data')
+```
+
 
 ```{r}
 #| context: server
 
-server <- function(input, output, session) {
-  output$selected_year <- reactive({
-   paste("You chose:", input$input_year)
-  })
-}
+presidents_reactive <- reactive({
+  presidents |>
+    filter(year == input$input_year)
+})
 
-shinyApp(ui = ui, server = server)
+
+# output$data <- DT::renderDataTable({
+#   presidents_reactive()
+# })
+
 ```
+
+```{r}
+presidents #working
+datatable(presidents) #notworking
+```
+
