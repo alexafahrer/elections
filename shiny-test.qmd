@@ -1,15 +1,8 @@
 ---
 title: "️US Presidential Elections"
-format: html
+format: dashboard
 server: shiny
 ---
-
-```{r}
-# https://github.com/quarto-dev/quarto-cli/issues/4105 
-# https://github.com/rstudio/rstudio/issues/14039 
-# https://quarto.org/docs/interactive/shiny/execution.html 
-```
-
 
 ```{r}
 #| context: setup
@@ -17,8 +10,14 @@ server: shiny
 library(tidyverse)
 library(DT)
 library(shiny)
+library(rmarkdown)
 
 presidents <- read_csv("~/R/project-2-team_ella/data/1976-2020-president.csv", show_col_types = FALSE)
+
+tibble_test <- tibble(
+  c(1, 2)
+)
+tibble_test <- as.data.frame(tibble_test)
 ```
 
 
@@ -48,14 +47,10 @@ presidents_reactive <- reactive({
 })
 
 
-# output$data <- DT::renderDataTable({
-#   presidents_reactive()
-# })
+output$data <- renderTable({
+  presidents
+})
 
 ```
 
-```{r}
-presidents #working
-datatable(presidents) #notworking
-```
 
