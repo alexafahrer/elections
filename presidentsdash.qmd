@@ -52,7 +52,7 @@ Welcome to our dashboard!
 
 [Abstract]
 
-::: {.card title="Page Navigation" .flow}
+::: {.card .flow}
 | Page  | Description  |
 |--------|--------|
 | [Home](#home)  | Home page with project abstract, navigation, and information about the data. |
