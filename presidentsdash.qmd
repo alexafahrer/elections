@@ -19,7 +19,7 @@ library(tools)
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 ```
 
-#  {.sidebar}
+## {.sidebar}
 
 This dashboard displays the various presidential election data from 1976 to 2020. 
 <hr>
@@ -43,22 +43,32 @@ selectInput(
 ::: {.callout-note}
 ## Note
 
-These plots represents the **popular vote** within each state. This does not reflect the electoral college votes. 
+This data represents the **popular vote** in each state, not the electoral college vote. 
 :::
 
 # Home
 
-Welcome!
+Welcome to our dashboard!
 
-<br>
+[Abstract]
 
-::: {.card title="About the Data"}
-MIT Election Data and Science Lab, [MIT Data Lab](https://electionlab.mit.edu/)
+::: {.card title="Page Navigation" .flow}
+| Page  | Description  |
+|--------|--------|
+| [Home](#home)  | Home page with project abstract, navigation, and information about the data. |
+| [Dashboard](#dashboard)   | Interactive dashboard to select a presidential election year from 1970 to 2020 and explore trends through visualizations.  |
+| [Swing States](#swing-states) | Interactive dashboard to investigate swing states and their voting trends in presidential elections from 1976 to 2020. |
+| [Data](#data) | A table displaying the raw data used in the project. |
+| [Write Up](#write-up) | Page with the required write-up for the class. |
+| [About](#about) | Page describing the team members involved in the project. |
 
-The data were gathered from the [Harvard Dataverse Database](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX).
+: Tabs on Dashboard {.striped .hover tbl-colwidths="[25,75]"}
 :::
 
-# Dashboard
+::: {.card title="About the Data" .flow}
+The data were originally collected by the [MIT Election Data and Science Lab](https://electionlab.mit.edu/). We accessed the data through the [Harvard Dataverse Database](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX).
+:::
+
 
 ```{r}
 #| label: functions
@@ -125,7 +135,7 @@ red_blue_map_data <- presidents |>
   select(state_fips, party_detailed) |>
   rename(fips = state_fips, values = party_detailed)
 
-swing_states <- presidents |>
+swing_states_binary <- presidents |>
   filter(
     party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
     year == 1976
@@ -133,6 +143,15 @@ swing_states <- presidents |>
   mutate(swing_state = if_else(state_po %in% c("NM", "NV", "IA", "FL", "VA", "OK", "TN"), TRUE, FALSE)) |>
   select(state_fips, swing_state) |>
   rename(fips = state_fips, values = swing_state)
+
+swing_states_red_blue <- presidents |>
+  filter(
+    party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
+    year == 1976, 
+    state_po %in% c("NM", "NV", "IA", "FL", "VA", "OK", "TN")
+  ) |>
+  select(state_fips, party_simplified) |>
+  rename(fips = state_fips, values = party_simplified)
 
 #1976:
 #1980: 
@@ -149,7 +168,9 @@ swing_states <- presidents |>
 # https://usafacts.org/articles/what-are-the-current-swing-states-and-how-have-they-changed-over-time/ 
 ```
 
-## Row {height="15%"}
+# Dashboard {scrolling="true"}
+
+## Row {height="10%"}
 
 ```{r}
 #| content: valuebox
@@ -198,12 +219,12 @@ list(
 )
 ```
 
-## Row {height="40%"}
+## Row {height="30%"}
 
-### Column {width="40%", .fill}
+### Column {width="50%", .fill}
 
 ```{r}
-#| title: Presidential Gradient
+#| title: Presidential Gradient^[The "point differential" is the difference of the vote share each candidate received from the total number of votes cast in the state, including votes cast for third-party candidates.]
 #| padding: 0px
 
 plot_usmap("states", data = gradient_map_data) +
@@ -214,13 +235,13 @@ plot_usmap("states", data = gradient_map_data) +
   labs(fill = "Point Differential") +
   theme(
     legend.position = "right",
-    legend.title = element_text(vjust = 1, face = "bold", size = 14),
+    legend.title = element_text(vjust = 1, size = 14),
     legend.key.size = unit(1.2, "cm"),
     legend.text = element_text(size = 12)
   )
 ```
 
-### Column {width="40%", .fill}
+### Column {width="50%", .fill}
 
 ```{r}
 #| title: Presidential Winners
@@ -231,56 +252,56 @@ plot_usmap("states", data = red_blue_map_data) +
   labs(fill = "Presidential Party") +
   theme(
     legend.position = "right",
-    legend.title = element_text(vjust = 1, face = "bold", size = 14),
+    legend.title = element_text(vjust = 1, size = 14),
     legend.key.size = unit(1.2, "cm"),
     legend.text = element_text(size = 12)
   )
 ```
 
-## Row {height="15%"}
+## Row {height="10%"}
 
-### Column {width="20%" expandable: false}
-
-```{r}
-#| title: "Swing State #1: Iowa"
-
-plot_usmap("states", include = "IA", data = red_blue_map_data, show.legend = FALSE) +
-  scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))
-```
-
-### Column {width="20%" expandable: false}
+### Column {width="20%"}
 
 ```{r}
-#| title: "Swing State #2: North Carolina"
+#| title: "State of Interest #1: North Carolina"
 
 plot_usmap("states", include = "NC", data = red_blue_map_data, show.legend = FALSE) +
   scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))
 ```
 
-### Column {width="20%" expandable: false}
+### Column {width="20%"}
 
 ```{r}
-#| title: "Swing State #3: Arizona"
+#| title: "State of Interest #2: Alabama"
+
+plot_usmap("states", include = "AL", data = red_blue_map_data, show.legend = FALSE) +
+  scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))
+```
+
+### Column {width="20%"}
+
+```{r}
+#| title: "State of Interest #3: Arizona"
 
 plot_usmap("states", include = "AZ", data = red_blue_map_data, show.legend = FALSE) +
   scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))
 ```
 
-### Column {width="20%" expandable: false}
+### Column {width="20%"}
 
 ```{r}
-#| title: "Swing State #4: Ohio"
+#| title: "State of Interest #4: Missouri"
 
-plot_usmap("states", include = "OH", data = red_blue_map_data, show.legend = FALSE) +
+plot_usmap("states", include = "MO", data = red_blue_map_data, show.legend = FALSE) +
   scale_fill_manual(values = c("#346EF0", "#EB3323"))
 ```
 
-### Column {width="20%" expandable: false}
+### Column {width="20%"}
 
 ```{r}
-#| title: "Swing State #5: Florida"
+#| title: "State of Interest #5: New York"
 
-plot_usmap("states", include = "FL", data = red_blue_map_data, show.legend = FALSE) +
+plot_usmap("states", include = "NY", data = red_blue_map_data, show.legend = FALSE) +
   scale_fill_manual(values = c("#346EF0", "#EB3323"))
 ```
 
@@ -288,7 +309,7 @@ plot_usmap("states", include = "FL", data = red_blue_map_data, show.legend = FAL
 
 ## Row {height="20%"}
 
-### Column {width="20%"}
+### Column {width="30%"}
 
 ```{r}
 #| content: valuebox
@@ -300,31 +321,43 @@ list(
 )
 ```
 
-### Column {width="80%"}
+### Column {width="70%"}
 
 ```{r}
 #| content: valuebox
-#| title: "Question"
-
-# NEED TO DO: make text smaller
+#| title: "Swing States"
 
 list(
   color = "secondary",
-  value = "What states are swing states in each election year?"
+  value = "NM, NV, IA, FL, VA, OK, TN"
 )
 ```
 
 ## Row {height="80%"}
 
+### Column {width="50%"}
+
 ```{r}
 #| title: "Swing States"
 
-plot_usmap("states", data = swing_states) +
+plot_usmap("states", data = swing_states_binary) +
   scale_fill_manual(values = c("gray", "purple")) +
   labs(fill = "Swing State") +
   theme(
-    legend.position = "right",
-    legend.title = element_text(face = "bold")
+    legend.position = "right"
+  )
+```
+
+### Column {width="50%"}
+
+```{r}
+#| title: "Swing State Voting Behaviors"
+
+plot_usmap("states", data = swing_states_red_blue) +
+  scale_fill_manual(values = c("blue", "red", "gray")) +
+  labs(fill = "Swing State") +
+  theme(
+    legend.position = "right"
   )
 ```
 
@@ -366,11 +399,11 @@ To answer these questions, we chose to make a quarto dashboard. The user can sel
 :::
 
 ::: {.card title="Data" .flow} 
-Our data originally came from the MIT Election Data and Science Lab, and we accessed the data through the Harvard Dataverse Database. It consists of 4,287 observations and 15 variables, including year, state, state_po, state_fips, state_cen, state_ic, office, candidate, party_detailed, writein, candidatevotes, totalvotes, version, notes, and party_simplified. 
+Our data originally came from the MIT Election Data and Science Lab, and we accessed the data through the Harvard Dataverse Database. It consists of `{r} nrow(presidents)` observations and `{r} ncol(presidents)` variables, including `year`, `state`, `state_po`, `state_fips`, `state_cen`, `state_ic`, `office`, `candidate`, `party_detailed`, `writein`, `candidatevotes`, `totalvotes`, `version`, `notes`, and `party_simplified.` 
 
 While creating the plots, we filtered the data set for candidates only running in the Democrat or Republican party. We did this because no third-party candidate has ever won the popular vote in a presidential election. Our two maps have states colored red and blue to indicate whether the Republican or Democrat candidate won the popular vote in that state (based on standardized political party colors). The gradient map was determined by the percentage of voters who voted for the Republican candidate minus the percentage of voters who voted for the Democrat candidate. This number was multiplied by 100 to get the number of “points” by which a state skewed Democrat or Republican. The second map shows the outright winner of the popular vote in each state, which was determined by whether the percentage of voters who voted for the Democrat candidate or Republican candidate was bigger. 
 
-On the data tab of our quarto dashboard, we show the data set with all 4,287 observations and the following variables: Year, State, Candidate Name, Political Party, Write-In?, Candidate Votes, Total State Votes, and Percentage of Total Vote in State. We left out other variables that were not relevant and would not be useful for the user in viewing the raw data. The “Percentage of Total Vote in State” for every candidate was calculated by taking the number of votes for each candidate and dividing it by the total votes for each state.
+On the data tab of our quarto dashboard, we show the data set with all `{r} nrow(presidents)` observations and the following variables: `Year`, `State`, `Candidate Name`, `Political Party`, `Write-In?`, `Candidate Votes`, `Total State Votes`, and `Percentage of Total Vote in State.` We left out other variables that were not relevant and would not be useful for the user in viewing the raw data. `Percentage of Total Vote in State` for every candidate was calculated by taking the number of votes for each candidate and dividing it by the total votes for each state.
 :::
 
 ::: {.card title="Why a Quarto Dashboard" .flow} 

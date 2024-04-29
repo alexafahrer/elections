@@ -2,9 +2,9 @@
 
 ## Description
 
-This dataset is comprised of results from U.S. presidential elections spanning from 1976 to 2020. Each record in the dataset represents the number of votes a candidate received in a particular state for a specific year. The dataset includes details such as the year, state, party affiliation, and total votes cast.
+This data set is comprised of results from U.S. presidential elections spanning from 1976 to 2020. Each record in the data set represents the number of votes a candidate received in a particular state for a specific year. The data set includes details such as the year, state, party affiliation, and total votes cast.
 
-Link to Dataset: https://dataverse.harvard.edu/file.xhtml?fileId=4299753&version=7.0&toolType=QUERY
+Link to Data set: https://dataverse.harvard.edu/file.xhtml?fileId=4299753&version=7.0&toolType=QUERY
 
 ## Data Collection Methods
 
@@ -12,7 +12,7 @@ The data were compiled from official sources by political science researchers. I
 
 ## Data Structure
 
-The dataset is provided in CSV format and contains the following columns:
+The data set is provided in CSV format and contains the following columns:
 
 - `year`: The year of the election.
 - `state`: The name of the state.
@@ -27,11 +27,9 @@ The dataset is provided in CSV format and contains the following columns:
 - `candidatevotes`: The number of votes the candidate received.
 - `totalvotes`: The total number of votes cast in the state.
 - `version`: The version of the data file.
-- `notes`: Additional notes regarding the election results (this column is empty in the provided dataset).
+- `notes`: Additional notes regarding the election results (this column is empty in the provided data set).
 - `party_simplified`: The simplified party affiliation of the candidate.
 
 ## Data Cleaning and Processing
 
-No additional cleaning or processing has been performed on this dataset. The dataset is presented as-is from the original compilation. Users should note that there may be inconsistencies or missing data, particularly in the `candidate` and `party_detailed` columns.
-
-
+No additional cleaning or processing has been performed on this data set. The data set is presented as-is from the original compilation. Users should note that there may be inconsistencies or missing data, particularly in the `candidate` and `party_detailed` columns.
