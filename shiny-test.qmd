@@ -13,18 +13,13 @@ library(shiny)
 library(rmarkdown)
 
 presidents <- read_csv("~/R/project-2-team_ella/data/1976-2020-president.csv", show_col_types = FALSE)
-
-tibble_test <- tibble(
-  c(1, 2)
-)
-tibble_test <- as.data.frame(tibble_test)
 ```
 
 
 ```{r}
 
 selectInput(
-    inputId = "input_year",
+    inputId = "x",
     label = strong("Election Year"),
     choices = unique(presidents$year),
     selected = 2000
@@ -37,20 +32,16 @@ selectInput(
 tableOutput('data')
 ```
 
-
 ```{r}
 #| context: server
 
 presidents_reactive <- reactive({
   presidents |>
-    filter(year == input$input_year)
+    filter(year == input$x)
 })
 
 
 output$data <- renderTable({
-  presidents
+  presidents_reactive()
 })
-
 ```
-
-
