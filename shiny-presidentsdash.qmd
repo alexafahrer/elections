@@ -430,7 +430,7 @@ plotOutput("ny_map")
 ## Row {height="30%"}
 
 ### Column {width="50%"}
-
+ 
 ```{r}
 #| content: valuebox
 # #| title: "Year"
