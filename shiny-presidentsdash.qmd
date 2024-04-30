@@ -10,6 +10,7 @@ server: shiny
 #| label: load-packages-and-data
 #| message: false
 #| include: false
+#| context: setup
 
 library(tidyverse)
 library(DT)
@@ -20,41 +21,56 @@ library(tools)
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 ```
 
-#  {.sidebar}
+## {.sidebar}
 
-This dashboard displays presidential election data from 1976 to 2020. 
+This dashboard displays the various presidential election data from 1976 to 2020. 
 <hr>
 
 Begin by selecting a year to investigate:
 ```{r}
-#| label: input
-#| context: server
+#| label: user-input
 
 selectInput(
   inputId = "input_year",
   label = strong("Election Year"),
   choices = unique(presidents$year),
-  selected = 1976
+  selected = "1976"
 )
+
+# https://quarto.org/docs/interactive/
 ```
 
 <hr>
 
 ::: {.callout-note}
-## Plot Note
+## Note
 
-These plots represents the **popular vote** within each state in the presidential
-election from the selected year.
+This data represents the **popular vote** in each state, not the electoral college vote. 
 :::
 
-<br>
-
-MIT Election Data and Science Lab, [MIT Data Lab](https://electionlab.mit.edu/)
-
-The data were gathered from the [Harvard Dataverse Database](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX).
-
-
 # Home
+
+Welcome to our dashboard!
+
+[Abstract]
+
+::: {.card .flow}
+| Page  | Description  |
+|--------|--------|
+| [Home](#home)  | Home page with project abstract, navigation, and information about the data. |
+| [Dashboard](#dashboard)   | Interactive dashboard to select a presidential election year from 1970 to 2020 and explore trends through visualizations.  |
+| [Swing States](#swing-states) | Interactive dashboard to investigate swing states and their voting trends in presidential elections from 1976 to 2020. |
+| [Data](#data) | A table displaying the raw data used in the project. |
+| [Write Up](#write-up) | Page with the required write-up for the class. |
+| [About](#about) | Page describing the team members involved in the project. |
+
+: Tabs on Dashboard {.striped .hover tbl-colwidths="[25,75]"}
+:::
+
+::: {.card title="About the Data" .flow}
+The data were originally collected by the [MIT Election Data and Science Lab](https://electionlab.mit.edu/). We accessed the data through the [Harvard Dataverse Database](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX).
+:::
+
 
 ```{r}
 #| label: functions
@@ -82,8 +98,7 @@ multiply_by_100 <- function(x) {
 ```{r}
 #| label: data-sets-for-plots
 #| include: false
-
-# this is where we are using the user input to filter the data sets by year
+#| context: server
 
 presidents_winner <- reactive({
   presidents |>
@@ -129,31 +144,49 @@ red_blue_map_data <- reactive({
     rename(fips = state_fips, values = party_detailed)
 })
 
-swing_states <- reactive({
+swing_states_binary <- reactive({
   presidents |>
     filter(
       party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
       year == input$input_year
     ) |>
-    mutate(swing_state = if_else(state_po %in% c("NM", "NV", "IA", "FL", "VA", "OK", "TN"), TRUE, FALSE)) |>
+    mutate(swing_state = if_else(state_po %in% 
+                                   c("NM", "NV", "IA", "FL", "VA", "OK", "TN"), TRUE, FALSE)) |>
     select(state_fips, swing_state) |>
     rename(fips = state_fips, values = swing_state)
 })
+
+swing_states_red_blue <- reactive({
+  presidents |>
+    filter(
+      party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
+      year == input$input_year, 
+      state_po %in% c("NM", "NV", "IA", "FL", "VA", "OK", "TN")
+    ) |>
+    select(state_fips, party_simplified) |>
+    rename(fips = state_fips, values = party_simplified)
+})
+
+#1976:
+#1980: 
+#1984: 
+#1988: c("NV", "AZ", "WI", "MI", "PA", "NC", "GA")
+#1992: c("NV", "AZ", "MT", "OH", "NH", "NJ", "NC", "GA", "FL")
+#1996: c("NV", "AZ", "MT", "CO", "KY", "VA", "TN", "GA")
+#2000: c("OR", "NM", "MN", "IA", "WI", "NH", "FL")
+#2004: c("NV", "NM", "IA", "WI", "OH", "PA", "NH")
+#2008: c("MT", "MO", "IN", "NC", "FL")
+#2012: c("OH", "NC", "FL")
+#2016: c("NV", "MN", "WI", "MI", "PA", "NH", "ME", "FL")
+#2020: c("NV", "AZ", "WI", "MI", "PA", "NC", "GA")
+# https://usafacts.org/articles/what-are-the-current-swing-states-and-how-have-they-changed-over-time/ 
 ```
 
+# Dashboard {scrolling="false"}
 
-## Row {height="15%"}
+## Row {height="10%"}
 
-```{r}
-#| content: valuebox
-#| title: "Year"
-#| context: server
-
-list(
-  color = "secondary",
-  value = input$input_year
-)
-```
+### Column {width="28%"}
 
 ```{r}
 #| content: valuebox
@@ -161,27 +194,14 @@ list(
 #| context: server
 
 list(
-  color = "blue",
+  color = "#346EF0",
   value = presidents_winner() |>
     filter(perc == max(perc)) |>
     pull(candidate)
 )
 ```
 
-
-```{r}
-#| content: valuebox
-#| title: "Percentage of Popular Vote Won"
-#| context: server
-
-list(
-  color = "secondary",
-  value = presidents_winner() |>
-    filter(perc == max(perc)) |>
-    mutate(perc = scales::percent(perc, accuracy = 0.1)) |>
-    pull(perc)
-)
-```
+### Column {width="28%"}
 
 ```{r}
 #| content: valuebox
@@ -189,160 +209,235 @@ list(
 #| context: server
 
 list(
-  color = "red",
+  color = "#EB3323",
   value = presidents_winner() |>
     filter(perc == min(perc)) |>
     pull(candidate)
 )
 ```
 
-## Row {height="40%"}
-
-### Column {width="40%", .fill}
-
-```{r}
-#| context: server
-
-# server <- function(input, output, session)
-# ^ not sure if this is needed or not
-
-output$gradient_map <- renderPlot({
-  plot_usmap("states", data = gradient_map_data()) +
-    scale_fill_gradient2(
-      labels = multiply_by_100, low = "blue",
-      high = "red", mid = "white", midpoint = 0
-    ) +
-    labs(fill = "Point Differential") +
-    theme(
-      legend.position = "right",
-      legend.title = element_text(vjust = 1, face = "bold")
-    )
-})
-```
-
-```{r}
-#| title: Presidential Gradient
-
-plotOutput("gradient_map")
-```
-
-### Column {width="40%", .fill}
-
-```{r}
-#| title: Presidential Winners
-
-# server <- function(input, output, session)
-# output$red_blue_map <- renderPlot({plot_usmap("states", data = red_blue_map_data()) +
-#   scale_fill_manual(values = c("blue", "red")) +
-#   labs(fill = "Presidential Party") +
-#   theme(
-#     legend.position = "right",
-#     legend.title = element_text(face = "bold"))
-# })
-#
-# plotOutput("red_blue_map")
-```
-
-## Row {height="15%"}
-
-### Column {width="20%"}
-
-```{r}
-#| title: "Swing State #1: Iowa"
-#| context: server
-
-plot_usmap("states", include = "IA", data = red_blue_map_data(), show.legend = FALSE) +
-  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red"))
-```
-
-
-### Column {width="20%"}
-
-```{r}
-#| title: "Swing State #2: North Carolina"
-#| context: server
-
-plot_usmap("states", include = "NC", data = red_blue_map_data(), show.legend = FALSE) +
-  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red"))
-```
-
-
-### Column {width="20%"}
-
-```{r}
-#| title: "Swing State #3: Arizona"
-#| context: server
-
-plot_usmap("states", include = "AZ", data = red_blue_map_data(), show.legend = FALSE) +
-  scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red"))
-```
-
-
-### Column {width="20%"}
-
-```{r}
-#| title: "Swing State #4: Ohio"
-#| context: server
-
-plot_usmap("states", include = "OH", data = red_blue_map_data(), show.legend = FALSE) +
-  scale_fill_manual(values = c("blue", "red"))
-```
-
-### Column {width="20%"}
-
-```{r}
-#| title: "Swing State #5: Florida"
-#| context: server
-
-plot_usmap("states", include = "FL", data = red_blue_map_data(), show.legend = FALSE) +
-  scale_fill_manual(values = c("blue", "red"))
-```
-
-
-# Swing States
-
-## Row {height="20%"}
-
-### Column {width="20%"}
+### Column {width="22%"}
 
 ```{r}
 #| content: valuebox
 #| title: "Year"
+#| context: server
 
-list(
-  color = "secondary",
-  value = "1976"
-)
+# list(
+#   color = "#D3D3D3",
+#   value = renderPrint({input$input_year})
+# )
 ```
 
-### Column {width="80%"}
+
+### Column {width="22%"}
 
 ```{r}
 #| content: valuebox
-#| title: "Question"
-
-# NEED TO DO: make text smaller
+#| title: "Wininer Vote Percentage"
+#| context: server
 
 list(
-  color = "secondary",
-  value = "What states are swing states in each election year?"
+  color = "#D3D3D3",
+  value = presidents_winner() |>
+    filter(perc == max(perc)) |>
+    mutate(perc = scales::percent(perc, accuracy = 0.1)) |>
+    pull(perc)
 )
 ```
 
-## Row {height="80%"}
+## Row {height="20%"}
+
+### Column {width="50%", .fill}
 
 ```{r}
+#| title: Presidential Gradient^[The "point differential" is the difference of the vote share each candidate received from the total number of votes cast in the state, including votes cast for third-party candidates.]
+#| padding: 0px
 #| context: server
 
-plot_usmap("states", data = swing_states()) +
-  scale_fill_manual(values = c("gray", "purple")) +
-  labs(fill = "Swing State") +
+output$gradient_map <- renderPlot({
+  plot_usmap("states", data = gradient_map_data()) +
+  scale_fill_gradient2(
+    labels = multiply_by_100, low = "#346EF0",
+    high = "#EB3323", mid = "white", midpoint = 0
+  ) +
+  labs(fill = "Point Differential") +
   theme(
     legend.position = "right",
-    legend.title = element_text(face = "bold")
+    legend.title = element_text(vjust = 1, size = 14),
+    legend.key.size = unit(1.2, "cm"),
+    legend.text = element_text(size = 12)
   )
+})
+
+plotOutput("gradient_map")
 ```
 
+### Column {width="50%", .fill}
+
+```{r}
+#| title: Presidential Winners
+#| padding: 0px
+#| context: server
+
+output$red_blue_map <- renderPlot({
+  plot_usmap("states", data = red_blue_map_data()) +
+  scale_fill_manual(values = c("#346EF0", "#EB3323"), labels = lower_case) +
+  labs(fill = "Presidential Party") +
+  theme(
+    legend.position = "right",
+    legend.title = element_text(vjust = 1, size = 14),
+    legend.key.size = unit(1.2, "cm"),
+    legend.text = element_text(size = 12)
+  )
+})
+
+plotOutput("red_blue_map")
+```
+
+## Row {height="10%"}
+
+### Column {width="20%"}
+
+```{r}
+#| title: "State of Interest #1: North Carolina"
+#| context: server
+
+output$nc_map <- renderPlot({
+  plot_usmap("states", include = "NC", data = red_blue_map_data(), show.legend = FALSE) +
+  scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))
+})
+
+plotOutput("nc_map")
+```
+
+### Column {width="20%"}
+
+```{r}
+#| title: "State of Interest #2: Alabama"
+#| context: server
+
+output$al_map <- renderPlot({
+  plot_usmap("states", include = "AL", data = red_blue_map_data(), show.legend = FALSE) +
+  scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))
+})
+
+plotOutput("al_map")
+```
+
+### Column {width="20%"}
+
+```{r}
+#| title: "State of Interest #3: Arizona"
+#| context: server
+
+output$az_map <- renderPlot({
+  plot_usmap("states", include = "AZ", data = red_blue_map_data(), show.legend = FALSE) +
+  scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))
+})
+
+plotOutput("az_map")
+```
+
+### Column {width="20%"}
+
+```{r}
+#| title: "State of Interest #4: Missouri"
+#| context: server
+
+output$mo_map <- renderPlot({
+  plot_usmap("states", include = "MO", data = red_blue_map_data(), show.legend = FALSE) +
+  scale_fill_manual(values = c("#346EF0", "#EB3323"))
+})
+
+plotOutput("mo_map")
+```
+
+### Column {width="20%"}
+
+```{r}
+#| title: "State of Interest #5: New York"
+#| context: server
+
+output$ny_map <- renderPlot({
+  plot_usmap("states", include = "NY", data = red_blue_map_data(), show.legend = FALSE) +
+  scale_fill_manual(values = c("#346EF0", "#EB3323"))
+})
+
+plotOutput("ny_map")
+```
+
+# Swing States
+
+## Row {height="30%"}
+
+### Column {width="50%"}
+
+```{r}
+#| content: valuebox
+#| title: "Year"
+#| context: server
+
+# list(
+#   color = "#D3D3D3",
+#   value = renderPrint({input$input_year})
+# )
+```
+
+### Column {width="50%"}
+
+```{r}
+#| content: valuebox
+#| title: "Number of Swing States"
+#| context: server
+
+list(
+  color = "#BA68C8",
+  value = swing_states_binary() |> 
+    count(values) |>
+    filter(values == TRUE) |>
+    pull(n)
+)
+```
+
+## Row {height="70%"}
+
+### Column {width="50%"}
+
+```{r}
+#| title: "Swing States (In Purple)"
+#| context: server
+
+output$swing_states_map <- renderPlot({
+  plot_usmap("states", data = swing_states_binary()) +
+    scale_fill_manual(values = c("#D3D3D3", "#BA68C8")) +
+    labs(fill = "Swing State") +
+    theme(
+      legend.position = "none"
+    )
+})
+
+plotOutput("swing_states_map")
+```
+
+### Column {width="50%"}
+
+```{r}
+#| title: "Swing State Voting Behaviors"
+#| context: server
+
+output$swing_states_red_blue_map <- renderPlot({
+  plot_usmap("states", data = swing_states_red_blue()) +
+    scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red"), 
+                      na.value = "#D3D3D3") +
+    labs(fill = "Swing State") +
+    theme(
+      legend.position = "none"
+    )
+})
+
+plotOutput("swing_states_red_blue_map")
+```
 
 # Data
 
@@ -368,3 +463,51 @@ presidents_datatable <- presidents |>
 
 datatable(presidents_datatable)
 ```
+
+# Write Up {scrolling="true"}
+
+::: {.card title="Introduction" .flow} 
+Our project was conducted by Team Ella, composed of Alexa Fahrer, Ryan Silver, Noah Costa, and Ella Hartman. While statistics is nearly the only academic similarity among the team, our team is interested in examining presidential voting trends in the wake of the upcoming presidential election this November. We are from Arizona, Missouri, New York, and Alabama, respectively, states with varied voting trends and histories. We were enthusiastic to see what insights we could uncover in a dataset involving the state-based history of presidential elections. 
+:::
+
+::: {.card title="Project Goals & Overview" .flow} 
+Our original goals were twofold. For one, we were very interested in seeing how presidential voting behaviors in states within the US have changed over time. To investigate this question, we seek to create two maps: first, a gradient map showing the depth of polarization for individual states, and second, a map that only highlights the popular vote winner by state. Secondly, we were curious to see how swing states have emerged and changed since 1976. For this, we seek to create a map highlighting the swing states in every presidential election year. 
+
+To answer these questions, we chose to make a quarto dashboard. The user can select a presidential election year (from 1976 to 2020) to investigate in the dashboard. On the first tab, after a year is selected, the dashboard shows the popular vote winner and percentage, popular vote loser, the USA gradient map, the USA popular vote winner map, and five well-known swing states colored either red or blue. On the second dashboard tab, we show a map of the US with the swing states highlighted purple, classified by if the popular vote candidate is within 3 percentage points of the next highest candidate. The last tab of the dashboard displays a data table of the raw data used in the dashboard.
+:::
+
+::: {.card title="Data" .flow} 
+Our data originally came from the MIT Election Data and Science Lab, and we accessed the data through the Harvard Dataverse Database. It consists of `{r} nrow(presidents)` observations and `{r} ncol(presidents)` variables, including `year`, `state`, `state_po`, `state_fips`, `state_cen`, `state_ic`, `office`, `candidate`, `party_detailed`, `writein`, `candidatevotes`, `totalvotes`, `version`, `notes`, and `party_simplified.` 
+
+While creating the plots, we filtered the data set for candidates only running in the Democrat or Republican party. We did this because no third-party candidate has ever won the popular vote in a presidential election. Our two maps have states colored red and blue to indicate whether the Republican or Democrat candidate won the popular vote in that state (based on standardized political party colors). The gradient map was determined by the percentage of voters who voted for the Republican candidate minus the percentage of voters who voted for the Democrat candidate. This number was multiplied by 100 to get the number of “points” by which a state skewed Democrat or Republican. The second map shows the outright winner of the popular vote in each state, which was determined by whether the percentage of voters who voted for the Democrat candidate or Republican candidate was bigger. 
+
+On the data tab of our quarto dashboard, we show the data set with all `{r} nrow(presidents)` observations and the following variables: `Year`, `State`, `Candidate Name`, `Political Party`, `Write-In?`, `Candidate Votes`, `Total State Votes`, and `Percentage of Total Vote in State.` We left out other variables that were not relevant and would not be useful for the user in viewing the raw data. `Percentage of Total Vote in State` for every candidate was calculated by taking the number of votes for each candidate and dividing it by the total votes for each state.
+:::
+
+::: {.card title="Why a Quarto Dashboard" .flow} 
+We decided a quarto dashboard would be the best method to display our findings because we could show the answers to these questions all at once in a fashion that clearly shows why we group certain answers together. Our first tab is an overview: we want to show the gradient and the popular vote maps together as well as a few swing states that are well-known with a link to our swing state dashboard. The second tab on the dashboard shows the swing states. It doesn’t quite answer how popular vote by state has changed over history, which is responded to on our first tab, but instead answers our second question about how swing states have changed. On this tab, we have the states that swing in a given year highlighted. Our last tab allows the viewer to scroll and see all of the different observations of our data. We chose to use a Quarto dashboard instead of a Shiny app or a Quarto document because the Quarto dashboard has a clean interface and is a better user experience than the clunkiness of a Shiny app. We appreciated the opportunity to use multiple tabs to investigate separate aspects of the data. 
+:::
+
+::: {.card title="Takeaways & Findings" .flow} 
+[fill in later]
+:::
+
+::: {.card title="Limitations" .flow} 
+Our work does have a few limitations and challenges. One is that those unfamiliar with United States geography may not understand which states are which on our graph. However, we felt that labeling the states was the only solution to this problem, and doing so would highly clutter our map. Thus, our map is directed towards those who know American geography. We additionally had to exclude the District of Columbia in our gradient map because it was so Democrat-leaning that it made every other Democratic state look almost white on the map (our gradient relies on comparing the most extreme states to more moderate states for coloring; even heavy-leaning democratic states looked only moderately blue). However, because DC is so geographically small, it would have been hard to see in the first place, and excluding it does not change the look of our graph. Going forward, we plan to use this dashboard as an informational tool to better educate people on trends throughout the years, especially in preparation for this upcoming election. It is important that people understand where current voting trends stand in the context of a historical lens. 
+:::
+
+::: {.card title="Conclusion" .flow}
+We originally wanted to see how voting patterns by state have changed, and we wanted to see how swing states have changed in presidential elections from 1976 to 2020. As a result of our work and methodologies, we can see these patterns on a by-state basis. 
+[finish]
+:::
+
+# About
+
+::: {.card}
+This project was developed by **Team Ella** in Spring 2024 for [STA/ISS 313: Advanced Data Visualization](https://vizdata.org/) at Duke University. The team is comprised of the following team members.
+
+-   Team member 1: My name is [Ryan Silver](https://github.com/ryan-silver) and I am a sophomore from St. Louis majoring in Economics and minoring in Statistical Science. I love playing pickleball and racquetball in my free time.
+-   Team member 2: My name is [Alexa Fahrer](https://github.com/alexafahrer) and I am a sophomore from Phoenix double majoring in Public Policy and Statistics with a minor in Education. In my free time, I enjoy watching movies, cheering on the 49ers, and playing pickleball.
+-   Team member 3: My name is [Ella Hartman](https://github.com/ellahartman) and I am a senior from Birmingham, Alabama studying Computer Science and Economics.
+-   Team member 4: My name is [Noah Costa](https://github.com/Noah-Costa14) and I am a senior from Long Island, New York studying Computer Science.
+:::

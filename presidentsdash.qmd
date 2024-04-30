@@ -438,8 +438,8 @@ We originally wanted to see how voting patterns by state have changed, and we wa
 ::: {.card}
 This project was developed by **Team Ella** in Spring 2024 for [STA/ISS 313: Advanced Data Visualization](https://vizdata.org/) at Duke University. The team is comprised of the following team members.
 
--   Team member 1: My name is [Ryan Silver](https://github.com/ryan-silver), a sophomore from St. Louis, and I am majoring in Economics and minoring in Statistical Science. I love playing pickleball and racquetball in my free time.
--   Team member 2: My name is [Alexa Fahrer](https://github.com/alexafahrer), a sophomore from Phoenix, and I am a double major in Public Policy and Statistics with a minor in Education. In my free time, I enjoy watching movies, cheering on the 49ers, and playing pickleball.
+-   Team member 1: My name is [Ryan Silver](https://github.com/ryan-silver) and I am a sophomore from St. Louis majoring in Economics and minoring in Statistical Science. I love playing pickle ball and racquetball in my free time.
+-   Team member 2: My name is [Alexa Fahrer](https://github.com/alexafahrer) and I am a sophomore from Phoenix double majoring in Public Policy and Statistics with a minor in Education. In my free time, I enjoy watching movies, cheering on the 49ers, and playing pickle ball.
 -   Team member 3: My name is [Ella Hartman](https://github.com/ellahartman) and I am a senior from Birmingham, Alabama studying Computer Science and Economics.
 -   Team member 4: My name is [Noah Costa](https://github.com/Noah-Costa14) and I am a senior from Long Island, New York studying Computer Science.
 :::

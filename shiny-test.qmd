@@ -10,7 +10,6 @@ server: shiny
 library(tidyverse)
 library(DT)
 library(shiny)
-library(rmarkdown)
 
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 ```
@@ -19,10 +18,10 @@ presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 ```{r}
 
 selectInput(
-    inputId = "x",
+    inputId = "input_year",
     label = strong("Election Year"),
     choices = unique(presidents$year),
-    selected = 2000
+    selected = "2000"
   )
 ```
 
@@ -37,7 +36,7 @@ tableOutput('data')
 
 presidents_reactive <- reactive({
   presidents |>
-    filter(year == input$x)
+    filter(year == input$input_year)
 })
 
 
