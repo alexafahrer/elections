@@ -335,7 +335,7 @@ selectInput(
 
 
 ```{r}
-#| title: "State:"
+#| title: "Select a State:"
 
 plotOutput("user_map")
 ```
@@ -471,7 +471,7 @@ plotOutput("swing_states_map")
 
 output$swing_states_red_blue_map <- renderPlot({
   plot_usmap("states", data = swing_states_red_blue()) +
-    scale_fill_manual(values = c("DEMOCRAT" = "blue", "REPUBLICAN" = "red"), 
+    scale_fill_manual(values = c("#EB3323", "#346EF0"), 
                       na.value = "#D3D3D3") +
     labs(fill = "Swing State") +
     theme(

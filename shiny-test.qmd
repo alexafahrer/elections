@@ -96,5 +96,28 @@ plot_usmap("states", data = swing_states) +
     theme(
       legend.position = "none"
     )
+
+
+```
+```{r}
+
+swing_states_red_blue <-
+  presidents |>
+    filter(
+      party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
+      year == 1984, 
+      state_fips == 27
+    ) |>
+    select(state_fips, party_simplified) |>
+    rename(fips = state_fips, values = party_simplified)
+
+
+plot_usmap("states", data = swing_states_red_blue) +
+    scale_fill_manual(values = c("#EB3323", "#346EF0"), 
+                      na.value = "#D3D3D3") +
+    labs(fill = "Swing State") +
+    theme(
+      legend.position = "none"
+    )
 ```
 
