@@ -172,15 +172,7 @@ swing_states_red_blue <- presidents |>
 
 ## Row {height="10%"}
 
-```{r}
-#| content: valuebox
-#| title: "Year"
-
-list(
-  color = "#D3D3D3",
-  value = "1976"
-)
-```
+### Column {width="28%"}
 
 ```{r}
 #| content: valuebox
@@ -194,18 +186,7 @@ list(
 )
 ```
 
-```{r}
-#| content: valuebox
-#| title: "Percentage of Popular Vote Won"
-
-list(
-  color = "#D3D3D3",
-  value = presidents_winner |>
-    filter(perc == max(perc)) |>
-    mutate(perc = scales::percent(perc, accuracy = 0.1)) |>
-    pull(perc)
-)
-```
+### Column {width="28%"}
 
 ```{r}
 #| content: valuebox
@@ -216,6 +197,34 @@ list(
   value = presidents_winner |>
     filter(perc == min(perc)) |>
     pull(candidate)
+)
+```
+
+### Column {width="22%"}
+
+```{r}
+#| content: valuebox
+#| title: "Year"
+
+list(
+  color = "#D3D3D3",
+  value = "1976"
+)
+```
+
+
+### Column {width="22%"}
+
+```{r}
+#| content: valuebox
+#| title: "Wininer Vote Percentage"
+
+list(
+  color = "#D3D3D3",
+  value = presidents_winner |>
+    filter(perc == max(perc)) |>
+    mutate(perc = scales::percent(perc, accuracy = 0.1)) |>
+    pull(perc)
 )
 ```
 
@@ -307,9 +316,9 @@ plot_usmap("states", include = "NY", data = red_blue_map_data, show.legend = FAL
 
 # Swing States
 
-## Row {height="20%"}
+## Row {height="30%"}
 
-### Column {width="30%"}
+### Column {width="50%"}
 
 ```{r}
 #| content: valuebox
@@ -321,30 +330,30 @@ list(
 )
 ```
 
-### Column {width="70%"}
+### Column {width="50%"}
 
 ```{r}
 #| content: valuebox
 #| title: "Swing States"
 
 list(
-  color = "#D3D3D3",
-  value = "NM, NV, IA, FL, VA, OK, TN"
+  color = "#BA68C8",
+  value = "7"
 )
 ```
 
-## Row {height="80%"}
+## Row {height="70%"}
 
 ### Column {width="50%"}
 
 ```{r}
-#| title: "Swing States"
+#| title: "Swing States (In Purple)"
 
 plot_usmap("states", data = swing_states_binary) +
-  scale_fill_manual(values = c("#D3D3D3", "purple")) +
+  scale_fill_manual(values = c("#D3D3D3", "#BA68C8")) +
   labs(fill = "Swing State") +
   theme(
-    legend.position = "right"
+    legend.position = "none"
   )
 ```
 
@@ -358,7 +367,7 @@ plot_usmap("states", data = swing_states_red_blue) +
                     na.value = "#D3D3D3") +
   labs(fill = "Swing State") +
   theme(
-    legend.position = "right"
+    legend.position = "none"
   )
 ```
 
