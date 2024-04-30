@@ -284,7 +284,7 @@ plotOutput("gradient_map")
 
 output$red_blue_map <- renderPlot({
   plot_usmap("states", data = red_blue_map_data()) +
-  scale_fill_manual(values = c("#346EF0", "#EB3323"))+
+  scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))+
                     #labels = lower_case) +
   labs(fill = "Presidential Party") +
   theme(
@@ -363,7 +363,7 @@ plotOutput("az_map")
 
 output$mo_map <- renderPlot({
   plot_usmap("states", include = "MO", data = red_blue_map_data(), show.legend = FALSE) +
-  scale_fill_manual(values = c("#346EF0", "#EB3323"))
+  scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))
 })
 ```
 
@@ -380,7 +380,7 @@ plotOutput("mo_map")
 
 output$ny_map <- renderPlot({
   plot_usmap("states", include = "NY", data = red_blue_map_data(), show.legend = FALSE) +
-  scale_fill_manual(values = c("#346EF0", "#EB3323"))
+  scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))
 })
 ```
 
