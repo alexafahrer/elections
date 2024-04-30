@@ -19,6 +19,8 @@ library(shiny)
 library(tools)
 
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
+
+#print(presidents)
 ```
 
 ## {.sidebar}
@@ -134,6 +136,8 @@ gradient_map_data <- reactive({
     rename(fips = state_fips, values = rep_dem_diff)
 })
 
+print(gradient_map_data)
+
 red_blue_map_data <- reactive({
   presidents |>
     filter(year == input$input_year) |>
@@ -243,7 +247,7 @@ swing_states_red_blue <- reactive({
 output$gradient_map <- renderPlot({
   plot_usmap("states", data = gradient_map_data()) +
   scale_fill_gradient2(
-    #labels = multiply_by_100
+    labels = scales::label_number(scale = 100, suffix = " points"),
     low = "#346EF0",
     high = "#EB3323", mid = "white", midpoint = 0
   ) +
@@ -271,8 +275,11 @@ plotOutput("gradient_map")
 
 output$red_blue_map <- renderPlot({
   plot_usmap("states", data = red_blue_map_data()) +
-  scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))+
-                    #labels = lower_case) +
+  scale_fill_manual(
+    values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"),
+    labels = c("Democrat", "Republican"), 
+    breaks = c("DEMOCRAT", "REPUBLICAN")
+  ) +
   labs(fill = "Presidential Party") +
   theme(
     legend.position = "right",
@@ -281,6 +288,19 @@ output$red_blue_map <- renderPlot({
     legend.text = element_text(size = 12)
   )
 })
+
+# output$red_blue_map <- renderPlot({
+#   plot_usmap("states", data = red_blue_map_data()) +
+#   scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))+
+#                     #labels = lower_case) +
+#   labs(fill = "Presidential Party") +
+#   theme(
+#     legend.position = "right",
+#     legend.title = element_text(vjust = 1, size = 14),
+#     legend.key.size = unit(1.2, "cm"),
+#     legend.text = element_text(size = 12)
+#   )
+# })
 ```
 
 ```{r}
