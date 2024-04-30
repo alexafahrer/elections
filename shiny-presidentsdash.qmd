@@ -16,16 +16,13 @@ library(tidyverse)
 library(DT)
 library(usmap)
 library(shiny)
-library(tools)
 
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
-
-#print(presidents)
 ```
 
 ## {.sidebar}
 
-This dashboard displays the various presidential election data from 1976 to 2020. 
+This dashboard displays presidential election data from 1976 to 2020. 
 <hr>
 
 Begin by selecting a year to investigate:
@@ -54,14 +51,14 @@ This data represents the **popular vote** in each state, not the electoral colle
 
 Welcome to our dashboard!
 
-This project attempted to examine presidential voting trends in the United States. With a shared interest in statistics and a curiosity about the upcoming presidential election, we aimed to analyze historical data to uncover insights into state-based voting behaviors. Our project goals focused on two main objectives. Firstly, we wanted to understand the changes of presidential voting behaviors over time, particularly focusing on state-level trends. To achieve this, we created two maps: one using a gradient to display the candidate polarization within a state and another simply coloring the popular vote winner by state. Secondly, we aimed to explore the emergence and evolution of swing states since 1976. To address these questions, we developed a Quarto dashboard, allowing users to select presidential election years from 1976 to 2020 for analysis. The dashboard provides a comprehensive view of each selected year, showcasing the popular vote winner and loser, gradient maps indicating point differential, and our highlighted home states.
+This project attempted to examine presidential voting trends in the United States. With a shared interest in statistics and a curiosity about the upcoming presidential election, we aimed to analyze historical data to uncover insights into state-based voting behaviors. The goal of our project was to create an interactive tool for users to explore trends in voting behaviors in the wake of the upcoming presidential election in November 2024. With our dashboard, we hope to help users investigate two main objectives. The first goal is to give users insight into the changes of presidential voting behaviors over time, particularly focusing on state-level trends. To achieve this, we created two maps: one using a gradient to display the candidate polarization within a state and another simply coloring the popular vote winner by state. Secondly, we wanted to examine the emergence and evolution of swing states since 1976. We developed a Quarto dashboard to allow users to select presidential election years from 1976 to 2020 for analysis. The dashboard provides a comprehensive view of each selected year, showing the popular vote winner and loser, gradient maps indicating point differential, states of interest, and swing states. 
 
 ---
 
 Page Descriptions
 
 - [Home:](#home) Home page with project abstract, navigation, and information about the data.
-- [Elections:](#elections) Interactive dashboard to select a presidential election year from 1970 to 2020 and explore trends through visualizations.
+- [Elections:](#elections) Interactive dashboard to select a presidential election year from 1976 to 2020 and explore trends through visualizations.
 - [Swing States:](#swing-states) Interactive dashboard to investigate swing states and their voting trends in presidential elections from 1976 to 2020.
 - [Data:](#data) A table displaying the raw data used in the project.
 - [Write Up:](#write-up) Page with the required write-up for the class.
@@ -78,17 +75,9 @@ The data were originally collected by the [MIT Election Data and Science Lab](ht
 #| label: functions
 #| include: false
 
-reformat_name <- function(name) {
-  parts <- strsplit(name, ", ")[[1]]
-  formatted_name <- paste(trimws(parts[2]), trimws(parts[1]))
-  text_lower <- tolower(formatted_name)
-  formatted_name <- toTitleCase(text_lower)
-  return(formatted_name)
-}
-
 lower_case <- function(name) {
   text_lower <- tolower(name)
-  formatted_name <- toTitleCase(text_lower)
+  formatted_name <- tools::toTitleCase(text_lower)
   return(formatted_name)
 }
 ```
@@ -112,7 +101,6 @@ presidents_winner <- reactive({
     summarize(total_votes = sum(candidatevotes)) |>
     mutate(perc = total_votes / sum(total_votes)) |>
     group_by(candidate) |>
-    #mutate(candidate = reformat_name(candidate)) |>
     ungroup()
 })
 
@@ -177,13 +165,13 @@ swing_states_red_blue <- reactive({
 #| content: valuebox
 #| title: "Year"
 
-textOutput("selected_year")
+textOutput("input_year")
 ```
 
 ```{r}
 #| context: server
 
-output$selected_year <- renderText({
+output$input_year <- renderText({
   input$input_year
 })
 ```
@@ -433,17 +421,17 @@ plotOutput("ny_map")
  
 ```{r}
 #| content: valuebox
-# #| title: "Year"
+#| title: "Year"
 
-#textOutput("selected_year")
+textOutput("swing_input_year")
 ```
 
 ```{r}
 #| context: server
 
-# output$selected_year <- renderText({
-#   input$input_year
-# })
+output$swing_input_year <- renderText({
+  input$input_year
+})
 ```
 
 ### Column {width="50%"}
@@ -539,29 +527,29 @@ Our project was conducted by Team Ella, composed of Alexa Fahrer, Ryan Silver, N
 :::
 
 ::: {.card title="Project Goals & Overview" .flow} 
-Our original goals were twofold. For one, we were very interested in seeing how presidential voting behaviors in states within the US have changed over time. To investigate this question, we seek to create two maps: first, a gradient map showing the depth of polarization for individual states, and second, a map that only highlights the popular vote winner by state. Secondly, we were curious to see how swing states have emerged and changed since 1976. For this, we seek to create a map highlighting the swing states in every presidential election year. 
+The goal of our project is to create an informational tool for users to explore state-level voting histories in US presidential elections. With our tool, we hope to allow users to investigate two specific topics. The first goal is to give users insight into the changes in presidential voting behaviors over time, particularly focusing on state-level trends. To achieve this, we created two maps: one using a gradient to display the candidate polarization within a state and another simply coloring the popular vote winner by state. Secondly, we were curious to see how swing states have emerged and changed since 1976. For this, we seek to create two additional maps: one that simply highlights the swing states in every presidential election year and a second map that indicates which way the state swung.
 
-To answer these questions, we chose to make a quarto dashboard. The user can select a presidential election year (from 1976 to 2020) to investigate in the dashboard. On the first tab, after a year is selected, the dashboard shows the popular vote winner and percentage, popular vote loser, the USA gradient map, the USA popular vote winner map, and five well-known swing states colored either red or blue. On the second dashboard tab, we show a map of the US with the swing states highlighted purple, classified by if the popular vote candidate is within 3 percentage points of the next highest candidate. The last tab of the dashboard displays a data table of the raw data used in the dashboard.
+To explore these questions, we chose to make an interactive quarto dashboard. The user can select a presidential election year (from 1976 to 2020) to investigate in the dashboard. The year of interest can be selected on the left-hand side of the page. After a year is selected, both tabs that display maps will update to the proper year. On the first tab, [Elections](#elections), the dashboard shows the popular vote winner and percentage, popular vote loser, the US gradient map, the US popular vote winner map, and five states of interest colored either red or blue. The user can select one state to investigate and the other four are our home states. On the second dashboard tab, [Swing States](#swing-states), we show a map of the US with the swing states highlighted in purple. For our project, a swing state is as any by if the popular vote candidate is within 3 percentage points of the next highest candidate. The other tabs of our dashboard include the pages [Home](#home), [Data](#data), [Write Up](#write-up), and [About](#about). On the [Home](#home) page, the user can find an introduction to our project; on the [Data](#data) page, the user can find access to the raw data we used; on the [Write Up](#write-up) page, the user can find the entirety of our process; and on the [About](#about) page, the user can read about the creators of the project and the purpose for creation. 
 :::
 
 ::: {.card title="Data" .flow} 
 Our data originally came from the MIT Election Data and Science Lab, and we accessed the data through the Harvard Dataverse Database. It consists of `{r} nrow(presidents)` observations and `{r} ncol(presidents)` variables, including `year`, `state`, `state_po`, `state_fips`, `state_cen`, `state_ic`, `office`, `candidate`, `party_detailed`, `writein`, `candidatevotes`, `totalvotes`, `version`, `notes`, and `party_simplified.` 
 
-While creating the plots, we filtered the data set for candidates only running in the Democrat or Republican party. We did this because no third-party candidate has ever won the popular vote in a presidential election. Our two maps have states colored red and blue to indicate whether the Republican or Democrat candidate won the popular vote in that state (based on standardized political party colors). The gradient map was determined by the percentage of voters who voted for the Republican candidate minus the percentage of voters who voted for the Democrat candidate. This number was multiplied by 100 to get the number of “points” by which a state skewed Democrat or Republican. The second map shows the outright winner of the popular vote in each state, which was determined by whether the percentage of voters who voted for the Democrat candidate or Republican candidate was bigger. 
+While creating the plots, we filtered the data set for candidates only running in the Democrat or Republican party. We did this because no third-party candidate has ever won the popular vote in a presidential election. Our two maps have states colored red and blue to indicate whether the Republican or Democrat candidate won the popular vote in that state (based on standardized political party colors). The gradient map was determined by the percentage of voters who voted for the Republican candidate minus the percentage of voters who voted for the Democrat candidate. This number was multiplied by 100 to get the number of “points” by which a state skewed Democrat or Republican. The second map shows the outright winner of the popular vote in each state, which was determined by whether the percentage of voters who voted for the Democrat candidate or Republican candidate was bigger. For our project, a swing state is as any by if the popular vote candidate is within 3 percentage points of the next highest candidate.
 
 On the data tab of our quarto dashboard, we show the data set with all `{r} nrow(presidents)` observations and the following variables: `Year`, `State`, `Candidate Name`, `Political Party`, `Write-In?`, `Candidate Votes`, `Total State Votes`, and `Percentage of Total Vote in State.` We left out other variables that were not relevant and would not be useful for the user in viewing the raw data. `Percentage of Total Vote in State` for every candidate was calculated by taking the number of votes for each candidate and dividing it by the total votes for each state.
 :::
 
 ::: {.card title="Why a Quarto Dashboard" .flow} 
-We decided a quarto dashboard would be the best method to display our findings because we could show the answers to these questions all at once in a fashion that clearly shows why we group certain answers together. Our first tab is an overview: we want to show the gradient and the popular vote maps together as well as a few swing states that are well-known with a link to our swing state dashboard. The second tab on the dashboard shows the swing states. It doesn’t quite answer how popular vote by state has changed over history, which is responded to on our first tab, but instead answers our second question about how swing states have changed. On this tab, we have the states that swing in a given year highlighted. Our last tab allows the viewer to scroll and see all of the different observations of our data. We chose to use a Quarto dashboard instead of a Shiny app or a Quarto document because the Quarto dashboard has a clean interface and is a better user experience than the clunkiness of a Shiny app. We appreciated the opportunity to use multiple tabs to investigate separate aspects of the data. 
+We decided a quarto dashboard would be the best method to display our findings because we could show the answers to these questions all at once in a fashion that clearly shows why we group certain answers together. Our first tab is an overview: we want to show the gradient and the popular vote maps together as well as allow the users to investigate a state of their choice. The second tab on the dashboard shows the swing states. These maps answer our second question about how swing states have changed. On this tab, we have the states that swing in a given year highlighted. Our last tab allows the viewer to scroll and see all of the different observations of our data. We chose to use a Quarto dashboard instead of a Shiny app or a Quarto document because the Quarto dashboard has a clean interface and is a better user experience than the clunkiness of a Shiny app. The integration of a Shiny server in the Quarto dashboard introduces an interactive element where the user can select a year and state. We appreciated the opportunity to use multiple tabs to investigate separate aspects of the data.
 :::
 
-::: {.card title="Takeaways & Findings" .flow} 
-We’ll begin first by going over trends of general voting data and second by identifying trends of swing states.
+::: {.card title="Findings" .flow} 
+Our Quarto dashboard proves an effective informational tool for users to educate themselves about historical voting trends before the upcoming election. We can also see insights into changes in popular voting since 1976, as well as the emergence of different swing states. 
 
-Starting in 1976 and making their way through 2020, voting trends have been relatively volatile in the last ~50 years. Democrats dominated the Southeast, Northern Midwest, and New York area while Republicans dominated mainly the Western USA in 1976. The 1980s were dominated by a massive Republican push virtually all around the country. 1992 and 1996 marked a swing back to the Democratic party, fueled mostly by Republican to Democratic switches in the West, Northeast, and Mississippi River states. The year 2000 swung back towards the Republicans, just barely, as many of these Southern Mississippi River states switched. 2004 shows a switch to more Republican and 2008 and 2012 suddenly flip back to Democrat, as the Northeast, Upper Midwest, and West become Democratic and the South and Western Midwest stay Republican. In 2016, for the first time since the 1980s, the Upper Midwest became Republican-leaning, though in 2020, some of these states and Arizona turned blue. As of 2020, Democrats mainly take the Western and Southwestern USA, Northeast, and Upper Midwest, while the Republicans take mainly Southern and Western Middle America as well as the South.
+Starting in 1976 and making their way through 2020, voting trends have been relatively volatile. Democrats dominated the Southeast, Northern Midwest, and New York area while Republicans dominated mainly the Western US in 1976. The 1980s were dominated by a massive Republican push virtually all around the country. 1992 and 1996 marked a swing back to the Democratic party, fueled mostly by Republican to Democratic switches in the West, Northeast, and Mississippi River states. The year 2000 swung back towards the Republicans, just barely, as many of these Southern Mississippi River states switched. 2004 shows a switch to more Republican and 2008 and 2012 suddenly flip back to Democrat, as the Northeast, Upper Midwest, and West become Democratic and the South and Western Midwest stay Republican. In 2016, for the first time since the 1980s, the Upper Midwest became Republican-leaning, though in 2020, some of these states and Arizona turned blue. As of 2020, Democrats mainly take the Western and Southwestern US, Northeast, and Upper Midwest, while the Republicans take mainly Southern and Western Middle America as well as the South.
 
-As of swing states, in 1976, the USA would see more swing states than any time since with 14 total swing states, and the majority of these happened to be Republican. There were few geographic trends of where these states were located. In 1980, virtually every swing state was either in the Southeast or the Northeast. Through the Republican dominance of the 1980s, there were only 2 and then 4 swing states in 1984 and 1988, respectively. In 1992 and 1996, there were more swing states (8 and 9), and these states were geographically located near the Western coast or along the Eastern coast. In 2000, 2004, and 2008, the swing states were different virtually every year with no geographic significance. 2012 marked a year of only three swing states, 2016 had more but virtually every swing state was along the coast, and 2020 was similar to 2016. Throughout the years, there are very few consistent swing states. North Carolina appears to be the most consistent swing state throughout the years, though it was only statistically a swing state, meaning within 3% of the winner, in 5 of the 12 recorded elections. Other classic swing states such as Arizona and Michigan are only “swing”, according to our definition, 2 or 3 times throughout this era.
+We defined swing states as states won by a margin of three points or less. In 1976, the US would see more swing states than any time since with 15 total swing states, and most of these happened to be Republican. There were few geographic trends of where these states were located. In 1980, virtually every swing state was either in the Southeast or the Northeast. Through the Republican dominance of the 1980s, there were only 2 and then 4 swing states in 1984 and 1988, respectively. In 1992 and 1996, there were more swing states (8 and 9), and these were located near the Western coast or along the Eastern coast. In 2000, 2004, and 2008, the swing states were different virtually every year with no geographic significance. 2012 marked a year of only three swing states, 2016 had more but virtually every swing state was along the coast, and 2020 was similar to 2016. Throughout the years, there have been very few consistent swing states. North Carolina appears to be the most consistent swing state throughout the years, though it was only statistically a swing state in five of the twelve elections. Other classic swing states such as Arizona and Michigan are only “swing,” according to our definition, two or three times throughout this era.
 :::
 
 ::: {.card title="Limitations" .flow} 
@@ -569,17 +557,16 @@ Our work does have a few limitations and challenges. One is that those unfamilia
 :::
 
 ::: {.card title="Conclusion" .flow}
-We originally wanted to see how voting patterns by state have changed, and we wanted to see how swing states have changed in presidential elections from 1976 to 2020. As a result of our work and methodologies, we can see these patterns on a by-state basis. 
-[finish]
+We originally wanted to create a tool to see how voting patterns by state have changed, and we wanted to see how swing states have changed in presidential elections from 1976 to 2020. As a result of our work and methodologies, we can see these patterns on a by-state basis. Through our interactive Quarto dashboard, we aim to provide users with a comprehensive tool to investigate changes in voting patterns and the emergence of swing states since 1976. The dashboard is an effective resource for understanding historical voting trends and preparing for future elections. Moving forward, we hope the dashboard will educate individuals on the evolution of state-level voting behaviors, something important to consider in election contexts. 
 :::
 
 # About
 
 ::: {.card}
-This project was developed by **Team Ella** in Spring 2024 for [STA/ISS 313: Advanced Data Visualization](https://vizdata.org/) at Duke University. The team is comprised of the following team members.
+This project was developed by Team Ella in Spring 2024 for [STA/ISS 313: Advanced Data Visualization](https://vizdata.org/) at Duke University. The team is comprised of the following team members.
 
--   Team member 1: My name is [Ryan Silver](https://github.com/ryan-silver) and I am a sophomore from St. Louis, Missouri majoring in Economics and minoring in Statistical Science. I love playing pickle ball and racquetball in my free time.
--   Team member 2: My name is [Alexa Fahrer](https://github.com/alexafahrer) and I am a sophomore from Phoenix, Arizona double majoring in Public Policy and Statistics with a minor in Education. In my free time, I enjoy watching movies, cheering on the 49ers, and playing pickle ball.
--   Team member 3: My name is [Ella Hartman](https://github.com/ellahartman) and I am a senior from Birmingham, Alabama studying Computer Science and Economics.
--   Team member 4: My name is [Noah Costa](https://github.com/Noah-Costa14) and I am a senior from Long Island, New York studying Computer Science. I enjoy golfing and hanging out with my friends on the BC Plaza in my free time.
+-   Ryan Silver: My name is [Ryan Silver](https://github.com/ryan-silver) and I am a sophomore from St. Louis, Missouri majoring in Economics and minoring in Statistical Science. I love playing pickle ball and racquetball in my free time.
+-   Alexa Fahrer: My name is [Alexa Fahrer](https://github.com/alexafahrer) and I am a sophomore from Phoenix, Arizona double majoring in Public Policy and Statistics with a minor in Education. In my free time, I enjoy watching movies, cheering on the 49ers, and playing pickle ball.
+-   Ella Hartman: My name is [Ella Hartman](https://github.com/ellahartman) and I am a senior from Birmingham, Alabama studying Computer Science and Economics.
+-   Noah Costa: My name is [Noah Costa](https://github.com/Noah-Costa14) and I am a senior from Long Island, New York studying Computer Science. I enjoy golfing and hanging out with my friends on the BC Plaza in my free time.
 :::
