@@ -171,7 +171,7 @@ swing_states_red_blue <- reactive({
 
 ## Row {height="10%"}
 
-### Column {width="28%"}
+### Column {width="25%"}
 
 ```{r}
 #| content: valuebox
@@ -185,18 +185,36 @@ textOutput("winner_name")
 #| context: server
 
 output$winner_name <- renderText({
-  presidents_winner() |>
-    filter(perc == max(perc)) |>
+  candidate_name <- presidents_winner() %>%
+    filter(perc == max(perc)) %>%
     pull(candidate)
+  
+  # Split the name into parts
+  parts <- str_split(candidate_name, ", ")[[1]]
+  
+  # Identify and handle the suffix "Jr"
+  suffix <- ifelse(grepl("Jr$", parts[2]), "Jr", "")
+  first_part <- str_replace(parts[2], "Jr$", "")  # Ensure 'Jr' is removed only if it's at the end
+  
+  # Trim, rearrange, and reformat the name
+  formatted_name <- paste(trimws(first_part), trimws(parts[1]))
+  text_lower <- tolower(formatted_name)
+  formatted_name <- toTitleCase(text_lower)
+  
+  # Append the suffix if it exists
+  if (nchar(suffix) > 0) {
+    formatted_name <- paste(formatted_name, suffix)
+  }
+  
+  formatted_name
 })
 ```
 
-### Column {width="28%"}
+### Column {width="25%"}
 
 ```{r}
 #| content: valuebox
 #| title: "Losing Candidate"
-#| color: "#D3D3D3"
 
 textOutput("loser_name")
 ```
@@ -205,18 +223,23 @@ textOutput("loser_name")
 #| context: server
 
 output$loser_name <- renderText({
-  presidents_winner() |>
+  loser_name <- presidents_winner() |>
     filter(perc == min(perc)) |>
     pull(candidate)
+  
+  parts <- str_split(loser_name, ", ")[[1]]
+  formatted_name <- paste(trimws(parts[2]), trimws(parts[1]))
+  text_lower <- tolower(formatted_name)
+  formatted_name <- toTitleCase(text_lower)
+  formatted_name
 })
 ```
 
-### Column {width="22%"}
+### Column {width="25%"}
 
 ```{r}
 #| content: valuebox
 #| title: "Year"
-#| color: "#D3D3D3"
 
 textOutput("selected_year")
 ```
@@ -229,12 +252,11 @@ output$selected_year <- renderText({
 })
 ```
 
-### Column {width="22%"}
+### Column {width="25%"}
 
 ```{r}
 #| content: valuebox
 #| title: "Winner Vote Percentage"
-#| color: "#D3D3D3"
 
 textOutput("winning_percentage")
 ```
