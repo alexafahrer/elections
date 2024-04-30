@@ -176,6 +176,7 @@ swing_states_red_blue <- reactive({
 ```{r}
 #| content: valuebox
 #| title: "Popular Vote Winner"
+#| color: "green"
 
 textOutput("winner_name")
 ```
@@ -195,6 +196,7 @@ output$winner_name <- renderText({
 ```{r}
 #| content: valuebox
 #| title: "Losing Candidate"
+#| color: "#D3D3D3"
 
 textOutput("loser_name")
 ```
@@ -214,6 +216,7 @@ output$loser_name <- renderText({
 ```{r}
 #| content: valuebox
 #| title: "Year"
+#| color: "#D3D3D3"
 
 textOutput("selected_year")
 ```
@@ -231,6 +234,7 @@ output$selected_year <- renderText({
 ```{r}
 #| content: valuebox
 #| title: "Winner Vote Percentage"
+#| color: "#D3D3D3"
 
 textOutput("winning_percentage")
 ```
@@ -420,6 +424,8 @@ plotOutput("ny_map")
 #   value = renderPrint({input$input_year})
 # )
 ```
+
+
 
 ### Column {width="50%"}
 
