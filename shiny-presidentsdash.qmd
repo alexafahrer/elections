@@ -140,8 +140,8 @@ red_blue_map_data <- reactive({
     group_by(state) |>
     filter(candidatevotes == max(candidatevotes)) |>
     ungroup() |>
-    select(state_fips, party_detailed) |>
-    rename(fips = state_fips, values = party_detailed)
+    select(state_fips, party_simplified) |>
+    rename(fips = state_fips, values = party_simplified)
 })
 
 swing_states_binary <- reactive({
@@ -193,12 +193,12 @@ swing_states_red_blue <- reactive({
 #| title: "Popular Vote Winner"
 #| context: server
 
-list(
-  color = "#346EF0",
-  value = presidents_winner() |>
-    filter(perc == max(perc)) |>
-    pull(candidate)
-)
+# list(
+#   color = "#346EF0",
+#   value = presidents_winner() |>
+#     filter(perc == max(perc)) |>
+#     pull(candidate)
+# )
 ```
 
 ### Column {width="28%"}
@@ -208,12 +208,12 @@ list(
 #| title: "Losing Candidate"
 #| context: server
 
-list(
-  color = "#EB3323",
-  value = presidents_winner() |>
-    filter(perc == min(perc)) |>
-    pull(candidate)
-)
+# list(
+#   color = "#EB3323",
+#   value = presidents_winner() |>
+#     filter(perc == min(perc)) |>
+#     pull(candidate)
+# )
 ```
 
 ### Column {width="22%"}
@@ -237,13 +237,13 @@ list(
 #| title: "Wininer Vote Percentage"
 #| context: server
 
-list(
-  color = "#D3D3D3",
-  value = presidents_winner() |>
-    filter(perc == max(perc)) |>
-    mutate(perc = scales::percent(perc, accuracy = 0.1)) |>
-    pull(perc)
-)
+# list(
+#   color = "#D3D3D3",
+#   value = presidents_winner() |>
+#     filter(perc == max(perc)) |>
+#     mutate(perc = scales::percent(perc, accuracy = 0.1)) |>
+#     pull(perc)
+# )
 ```
 
 ## Row {height="20%"}
@@ -251,14 +251,13 @@ list(
 ### Column {width="50%", .fill}
 
 ```{r}
-#| title: Presidential Gradient^[The "point differential" is the difference of the vote share each candidate received from the total number of votes cast in the state, including votes cast for third-party candidates.]
-#| padding: 0px
 #| context: server
 
 output$gradient_map <- renderPlot({
   plot_usmap("states", data = gradient_map_data()) +
   scale_fill_gradient2(
-    labels = multiply_by_100, low = "#346EF0",
+    #labels = multiply_by_100
+    low = "#346EF0",
     high = "#EB3323", mid = "white", midpoint = 0
   ) +
   labs(fill = "Point Differential") +
@@ -269,6 +268,11 @@ output$gradient_map <- renderPlot({
     legend.text = element_text(size = 12)
   )
 })
+```
+
+```{r}
+#| title: Presidential Gradient^[The "point differential" is the difference of the vote share each candidate received from the total number of votes cast in the state, including votes cast for third-party candidates.]
+#| padding: 0px
 
 plotOutput("gradient_map")
 ```
@@ -276,13 +280,12 @@ plotOutput("gradient_map")
 ### Column {width="50%", .fill}
 
 ```{r}
-#| title: Presidential Winners
-#| padding: 0px
 #| context: server
 
 output$red_blue_map <- renderPlot({
   plot_usmap("states", data = red_blue_map_data()) +
-  scale_fill_manual(values = c("#346EF0", "#EB3323"), labels = lower_case) +
+  scale_fill_manual(values = c("#346EF0", "#EB3323"))+
+                    #labels = lower_case) +
   labs(fill = "Presidential Party") +
   theme(
     legend.position = "right",
@@ -291,6 +294,11 @@ output$red_blue_map <- renderPlot({
     legend.text = element_text(size = 12)
   )
 })
+```
+
+```{r}
+#| title: Presidential Winners
+#| padding: 0px
 
 plotOutput("red_blue_map")
 ```
@@ -300,13 +308,16 @@ plotOutput("red_blue_map")
 ### Column {width="20%"}
 
 ```{r}
-#| title: "State of Interest #1: North Carolina"
 #| context: server
 
 output$nc_map <- renderPlot({
   plot_usmap("states", include = "NC", data = red_blue_map_data(), show.legend = FALSE) +
   scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))
 })
+```
+
+```{r}
+#| title: "State of Interest #1: North Carolina"
 
 plotOutput("nc_map")
 ```
@@ -314,13 +325,16 @@ plotOutput("nc_map")
 ### Column {width="20%"}
 
 ```{r}
-#| title: "State of Interest #2: Alabama"
 #| context: server
 
 output$al_map <- renderPlot({
   plot_usmap("states", include = "AL", data = red_blue_map_data(), show.legend = FALSE) +
   scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))
 })
+```
+
+```{r}
+#| title: "State of Interest #2: Alabama"
 
 plotOutput("al_map")
 ```
@@ -328,13 +342,16 @@ plotOutput("al_map")
 ### Column {width="20%"}
 
 ```{r}
-#| title: "State of Interest #3: Arizona"
 #| context: server
 
 output$az_map <- renderPlot({
   plot_usmap("states", include = "AZ", data = red_blue_map_data(), show.legend = FALSE) +
   scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))
 })
+```
+
+```{r}
+#| title: "State of Interest #3: Arizona"
 
 plotOutput("az_map")
 ```
@@ -342,13 +359,16 @@ plotOutput("az_map")
 ### Column {width="20%"}
 
 ```{r}
-#| title: "State of Interest #4: Missouri"
 #| context: server
 
 output$mo_map <- renderPlot({
   plot_usmap("states", include = "MO", data = red_blue_map_data(), show.legend = FALSE) +
   scale_fill_manual(values = c("#346EF0", "#EB3323"))
 })
+```
+
+```{r}
+#| title: "State of Interest #4: Missouri"
 
 plotOutput("mo_map")
 ```
@@ -356,13 +376,16 @@ plotOutput("mo_map")
 ### Column {width="20%"}
 
 ```{r}
-#| title: "State of Interest #5: New York"
 #| context: server
 
 output$ny_map <- renderPlot({
   plot_usmap("states", include = "NY", data = red_blue_map_data(), show.legend = FALSE) +
   scale_fill_manual(values = c("#346EF0", "#EB3323"))
 })
+```
+
+```{r}
+#| title: "State of Interest #5: New York"
 
 plotOutput("ny_map")
 ```
@@ -391,13 +414,13 @@ plotOutput("ny_map")
 #| title: "Number of Swing States"
 #| context: server
 
-list(
-  color = "#BA68C8",
-  value = swing_states_binary() |> 
-    count(values) |>
-    filter(values == TRUE) |>
-    pull(n)
-)
+# list(
+#   color = "#BA68C8",
+#   value = swing_states_binary() |> 
+#     count(values) |>
+#     filter(values == TRUE) |>
+#     pull(n)
+# )
 ```
 
 ## Row {height="70%"}
@@ -405,7 +428,6 @@ list(
 ### Column {width="50%"}
 
 ```{r}
-#| title: "Swing States (In Purple)"
 #| context: server
 
 output$swing_states_map <- renderPlot({
@@ -416,6 +438,10 @@ output$swing_states_map <- renderPlot({
       legend.position = "none"
     )
 })
+```
+
+```{r}
+#| title: "Swing States (In Purple)"
 
 plotOutput("swing_states_map")
 ```
@@ -423,7 +449,6 @@ plotOutput("swing_states_map")
 ### Column {width="50%"}
 
 ```{r}
-#| title: "Swing State Voting Behaviors"
 #| context: server
 
 output$swing_states_red_blue_map <- renderPlot({
@@ -435,6 +460,10 @@ output$swing_states_red_blue_map <- renderPlot({
       legend.position = "none"
     )
 })
+```
+
+```{r}
+#| title: "Swing State Voting Behaviors"
 
 plotOutput("swing_states_red_blue_map")
 ```
@@ -467,7 +496,7 @@ datatable(presidents_datatable)
 # Write Up {scrolling="true"}
 
 ::: {.card title="Introduction" .flow} 
-Our project was conducted by Team Ella, composed of Alexa Fahrer, Ryan Silver, Noah Costa, and Ella Hartman. While statistics is nearly the only academic similarity among the team, our team is interested in examining presidential voting trends in the wake of the upcoming presidential election this November. We are from Arizona, Missouri, New York, and Alabama, respectively, states with varied voting trends and histories. We were enthusiastic to see what insights we could uncover in a dataset involving the state-based history of presidential elections. 
+Our project was conducted by Team Ella, composed of Alexa Fahrer, Ryan Silver, Noah Costa, and Ella Hartman. While statistics is nearly the only academic similarity among the team, our team is interested in examining presidential voting trends in the wake of the upcoming presidential election this November. We are from Arizona, Missouri, New York, and Alabama, respectively, states with varied voting trends and histories. We were enthusiastic to see what insights we could uncover in a data set involving the state-based history of presidential elections. 
 :::
 
 ::: {.card title="Project Goals & Overview" .flow} 
@@ -506,8 +535,8 @@ We originally wanted to see how voting patterns by state have changed, and we wa
 ::: {.card}
 This project was developed by **Team Ella** in Spring 2024 for [STA/ISS 313: Advanced Data Visualization](https://vizdata.org/) at Duke University. The team is comprised of the following team members.
 
--   Team member 1: My name is [Ryan Silver](https://github.com/ryan-silver) and I am a sophomore from St. Louis majoring in Economics and minoring in Statistical Science. I love playing pickleball and racquetball in my free time.
--   Team member 2: My name is [Alexa Fahrer](https://github.com/alexafahrer) and I am a sophomore from Phoenix double majoring in Public Policy and Statistics with a minor in Education. In my free time, I enjoy watching movies, cheering on the 49ers, and playing pickleball.
+-   Team member 1: My name is [Ryan Silver](https://github.com/ryan-silver) and I am a sophomore from St. Louis majoring in Economics and minoring in Statistical Science. I love playing pickle ball and racquetball in my free time.
+-   Team member 2: My name is [Alexa Fahrer](https://github.com/alexafahrer) and I am a sophomore from Phoenix double majoring in Public Policy and Statistics with a minor in Education. In my free time, I enjoy watching movies, cheering on the 49ers, and playing pickle ball.
 -   Team member 3: My name is [Ella Hartman](https://github.com/ellahartman) and I am a senior from Birmingham, Alabama studying Computer Science and Economics.
 -   Team member 4: My name is [Noah Costa](https://github.com/Noah-Costa14) and I am a senior from Long Island, New York studying Computer Science.
 :::

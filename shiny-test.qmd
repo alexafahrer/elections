@@ -10,10 +10,12 @@ server: shiny
 library(tidyverse)
 library(DT)
 library(shiny)
+library(usmap)
 
 presidents <- read_csv("data/1976-2020-president.csv", show_col_types = FALSE)
 ```
 
+## {.sidebar}
 
 ```{r}
 
@@ -32,15 +34,36 @@ tableOutput('data')
 ```
 
 ```{r}
+plotOutput("red_blue_map")
+```
+
+```{r}
 #| context: server
 
-presidents_reactive <- reactive({
+red_blue_map_data <- reactive({
   presidents |>
-    filter(year == input$input_year)
+    filter(year == input$input_year) |>
+    group_by(state) |>
+    filter(candidatevotes == max(candidatevotes)) |>
+    ungroup() |>
+    select(state_fips, party_simplified) |>
+    rename(fips = state_fips, values = party_simplified)
 })
 
 
 output$data <- renderTable({
-  presidents_reactive()
+  presidents
+})
+
+output$red_blue_map <- renderPlot({
+  plot_usmap("states", data = red_blue_map_data()) +
+  scale_fill_manual(values = c("#346EF0", "#EB3323")) +
+  labs(fill = "Presidential Party") +
+  theme(
+    legend.position = "right",
+    legend.title = element_text(vjust = 1, size = 14),
+    legend.key.size = unit(1.2, "cm"),
+    legend.text = element_text(size = 12)
+  )
 })
 ```
