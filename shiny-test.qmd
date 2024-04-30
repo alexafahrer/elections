@@ -121,3 +121,23 @@ plot_usmap("states", data = swing_states_red_blue) +
     )
 ```
 
+```{r}
+presidents |>
+    filter(
+      year == 2020,
+      party_simplified %in% c("DEMOCRAT", "REPUBLICAN")
+    ) |>
+    group_by(state) |>
+    filter(candidatevotes == max(candidatevotes)) |>
+    ungroup() |>
+    select(year, state, state_fips, candidate, party_simplified, candidatevotes, totalvotes) |>
+    group_by(candidate) |>
+    summarize(total_votes = sum(candidatevotes)) |>
+    mutate(perc = total_votes / sum(total_votes)) |>
+    group_by(candidate) |>
+    mutate(candidate = reformat_name(candidate)) |>
+    ungroup() |>
+  filter(perc == max(perc)) |>
+    pull(candidate)
+```
+

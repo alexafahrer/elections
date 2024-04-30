@@ -112,7 +112,7 @@ presidents_winner <- reactive({
     summarize(total_votes = sum(candidatevotes)) |>
     mutate(perc = total_votes / sum(total_votes)) |>
     group_by(candidate) |>
-    mutate(candidate = reformat_name(candidate)) |>
+    #mutate(candidate = reformat_name(candidate)) |>
     ungroup()
 })
 
@@ -177,21 +177,17 @@ swing_states_red_blue <- reactive({
 #| content: valuebox
 #| title: "Popular Vote Winner"
 
-list(
-  color = "#346EF0",
-  value = textOutput("winner_name")
-)
+textOutput("winner_name")
 ```
 
 ```{r}
 #| context: server
 
-winner_name <- reactive({
+output$winner_name <- renderText({
   presidents_winner() |>
     filter(perc == max(perc)) |>
     pull(candidate)
 })
-output$winner_name <- renderText(winner_name())
 ```
 
 ### Column {width="28%"}
@@ -199,14 +195,18 @@ output$winner_name <- renderText(winner_name())
 ```{r}
 #| content: valuebox
 #| title: "Losing Candidate"
+
+textOutput("loser_name")
+```
+
+```{r}
 #| context: server
 
-# list(
-#   color = "#EB3323",
-#   value = presidents_winner() |>
-#     filter(perc == min(perc)) |>
-#     pull(candidate)
-# )
+output$loser_name <- renderText({
+  presidents_winner() |>
+    filter(perc == min(perc)) |>
+    pull(candidate)
+})
 ```
 
 ### Column {width="22%"}
@@ -214,29 +214,36 @@ output$winner_name <- renderText(winner_name())
 ```{r}
 #| content: valuebox
 #| title: "Year"
-#| context: server
 
-# list(
-#   color = "#D3D3D3",
-#   value = renderPrint({input$input_year})
-# )
+textOutput("selected_year")
 ```
 
+```{r}
+#| context: server
+
+output$selected_year <- renderText({
+  input$input_year
+})
+```
 
 ### Column {width="22%"}
 
 ```{r}
 #| content: valuebox
-#| title: "Wininer Vote Percentage"
+#| title: "Winner Vote Percentage"
+
+textOutput("winning_percentage")
+```
+
+```{r}
 #| context: server
 
-# list(
-#   color = "#D3D3D3",
-#   value = presidents_winner() |>
-#     filter(perc == max(perc)) |>
-#     mutate(perc = scales::percent(perc, accuracy = 0.1)) |>
-#     pull(perc)
-# )
+output$winning_percentage <- renderText({
+  presidents_winner() |>
+    filter(perc == max(perc)) |>
+    mutate(perc = scales::percent(perc, accuracy = 0.1)) |>
+    pull(perc)
+})
 ```
 
 ## Row {height="20%"}
