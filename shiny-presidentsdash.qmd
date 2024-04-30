@@ -478,7 +478,7 @@ textOutput("selected_year")
 #| context: server
 
 output$selected_year <- renderText({
-  length(swing_states())
+  nrow(swing_states())
 })
 ```
 
