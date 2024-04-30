@@ -67,3 +67,34 @@ output$red_blue_map <- renderPlot({
   )
 })
 ```
+
+
+
+```{r}
+swing_states <- presidents |>
+  filter(
+    party_simplified %in% c("DEMOCRAT", "REPUBLICAN"),
+    state != "DISTRICT OF COLUMBIA",
+    year == 2016
+  ) |>
+  select(party_simplified, year, state_fips, candidatevotes, totalvotes) |>
+  mutate(perc_votes = candidatevotes / totalvotes) |>
+  arrange(party_simplified) |>
+  group_by(year, state_fips) |>
+  reframe(rep_dem_diff = diff(perc_votes)) |>
+  select(-year) |>
+  rename(fips = state_fips, values = rep_dem_diff) |>
+  filter(
+    abs(values) < 0.03
+  ) |>
+  mutate(values = TRUE)
+swing_states
+
+plot_usmap("states", data = swing_states) +
+    scale_fill_manual(values = "#BA68C8", na.value = "#D3D3D3") +
+    labs(fill = "Swing State") +
+    theme(
+      legend.position = "none"
+    )
+```
+
