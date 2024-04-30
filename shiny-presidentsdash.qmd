@@ -52,24 +52,51 @@ This data represents the **popular vote** in each state, not the electoral colle
 
 Welcome to our dashboard!
 
-[Abstract]
+Abstract
 
-::: {.card .flow}
-| Page  | Description  |
-|--------|--------|
-| [Home](#home)  | Home page with project abstract, navigation, and information about the data. |
-| [Dashboard](#dashboard)   | Interactive dashboard to select a presidential election year from 1970 to 2020 and explore trends through visualizations.  |
-| [Swing States](#swing-states) | Interactive dashboard to investigate swing states and their voting trends in presidential elections from 1976 to 2020. |
-| [Data](#data) | A table displaying the raw data used in the project. |
-| [Write Up](#write-up) | Page with the required write-up for the class. |
-| [About](#about) | Page describing the team members involved in the project. |
+---
 
-: Tabs on Dashboard {.striped .hover tbl-colwidths="[25,75]"}
-:::
+Page Descriptions
 
-::: {.card title="About the Data" .flow}
+- [Home:](#home) Home page with project abstract, navigation, and information about the data.
+- [Dashboard:](#dashboard) Interactive dashboard to select a presidential election year from 1970 to 2020 and explore trends through visualizations.
+- [Swing States:](#swing-states) Interactive dashboard to investigate swing states and their voting trends in presidential elections from 1976 to 2020.
+- [Data:](#data) A table displaying the raw data used in the project.
+- [Write Up:](#write-up) Page with the required write-up for the class.
+- [About:](#about) Page describing the team members involved in the project.
+
+About the Data
+
+---
+
+Data Source
+
 The data were originally collected by the [MIT Election Data and Science Lab](https://electionlab.mit.edu/). We accessed the data through the [Harvard Dataverse Database](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX).
-:::
+
+
+
+<!-- # Home -->
+
+<!-- Welcome to our dashboard! -->
+
+<!-- [Abstract] -->
+
+<!-- ::: {.card .flow} -->
+<!-- | Page  | Description  | -->
+<!-- |--------|--------| -->
+<!-- | [Home](#home)  | Home page with project abstract, navigation, and information about the data. | -->
+<!-- | [Dashboard](#dashboard)   | Interactive dashboard to select a presidential election year from 1970 to 2020 and explore trends through visualizations.  | -->
+<!-- | [Swing States](#swing-states) | Interactive dashboard to investigate swing states and their voting trends in presidential elections from 1976 to 2020. | -->
+<!-- | [Data](#data) | A table displaying the raw data used in the project. | -->
+<!-- | [Write Up](#write-up) | Page with the required write-up for the class. | -->
+<!-- | [About](#about) | Page describing the team members involved in the project. | -->
+
+<!-- : Tabs on Dashboard {.striped .hover tbl-colwidths="[25,75]"} -->
+<!-- ::: -->
+
+<!-- ::: {.card title="About the Data" .flow} -->
+<!-- The data were originally collected by the [MIT Election Data and Science Lab](https://electionlab.mit.edu/). We accessed the data through the [Harvard Dataverse Database](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX). -->
+<!-- ::: -->
 
 
 ```{r}
