@@ -43,3 +43,7 @@ Week 5 (April 15): The maps should be completed. The team will then focus on ani
 Week 6 (April 22): Team will finish most or all of project by lab on Wednesday. In lab, team will review other team's code and complete peer reviews. After lab, team members will communicate to update project based on peer feedback. Team will then meet to finalize project and start preparing for presentation.
 
 Week 7 (April 29): Outside of class, team will meet to put any finishing touches on the project and practice for the presentation. Final project and presentation is due on Wednesday, May 1st at 9am.
+
+# Organization
+
+We have created a `README.md` file that explains the organization of our repository. We plan to house the files for the Shiny app in a folder, the data set in a folder, and everything else will be in the main workflow. 
