@@ -439,15 +439,17 @@ plotOutput("ny_map")
 ```{r}
 #| content: valuebox
 #| title: "Year"
-#| context: server
 
-# list(
-#   color = "#D3D3D3",
-#   value = renderPrint({input$input_year})
-# )
+textOutput("selected_year")
 ```
 
+```{r}
+#| context: server
 
+output$selected_year <- renderText({
+  input$input_year
+})
+```
 
 ### Column {width="50%"}
 
@@ -463,6 +465,21 @@ plotOutput("ny_map")
 #     filter(values == TRUE) |>
 #     pull(n)
 # )
+```
+
+```{r}
+#| content: valuebox
+#| title: "Number of Swing States"
+
+textOutput("selected_year")
+```
+
+```{r}
+#| context: server
+
+output$selected_year <- renderText({
+  length(swing_states())
+})
 ```
 
 ## Row {height="70%"}
