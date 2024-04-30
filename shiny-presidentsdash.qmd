@@ -175,6 +175,23 @@ swing_states_red_blue <- reactive({
 
 ```{r}
 #| content: valuebox
+#| title: "Year"
+
+textOutput("selected_year")
+```
+
+```{r}
+#| context: server
+
+output$selected_year <- renderText({
+  input$input_year
+})
+```
+
+### Column {width="25%"}
+
+```{r}
+#| content: valuebox
 #| title: "Popular Vote Winner"
 #| color: "green"
 
@@ -185,28 +202,29 @@ textOutput("winner_name")
 #| context: server
 
 output$winner_name <- renderText({
-  candidate_name <- presidents_winner() %>%
-    filter(perc == max(perc)) %>%
+  candidate_name <- presidents_winner() |>
+    filter(perc == max(perc)) |>
     pull(candidate)
+  candidate_name
   
-  # Split the name into parts
-  parts <- str_split(candidate_name, ", ")[[1]]
-  
-  # Identify and handle the suffix "Jr"
-  suffix <- ifelse(grepl("Jr$", parts[2]), "Jr", "")
-  first_part <- str_replace(parts[2], "Jr$", "")  # Ensure 'Jr' is removed only if it's at the end
-  
-  # Trim, rearrange, and reformat the name
-  formatted_name <- paste(trimws(first_part), trimws(parts[1]))
-  text_lower <- tolower(formatted_name)
-  formatted_name <- toTitleCase(text_lower)
-  
-  # Append the suffix if it exists
-  if (nchar(suffix) > 0) {
-    formatted_name <- paste(formatted_name, suffix)
-  }
-  
-  formatted_name
+  # # Split the name into parts
+  # parts <- str_split(candidate_name, ", ")[[1]]
+  # 
+  # # Identify and handle the suffix "Jr"
+  # suffix <- ifelse(grepl("Jr$", parts[2]), "Jr", "")
+  # first_part <- str_replace(parts[2], "Jr$", "")
+  # 
+  # # Trim, rearrange, and reformat the name
+  # formatted_name <- paste(trimws(first_part), trimws(parts[1]))
+  # text_lower <- tolower(formatted_name)
+  # formatted_name <- toTitleCase(text_lower)
+  # 
+  # # Append the suffix if it exists
+  # if (nchar(suffix) > 0) {
+  #   formatted_name <- paste(formatted_name, suffix)
+  # }
+  # 
+  # formatted_name
 })
 ```
 
@@ -223,32 +241,9 @@ textOutput("loser_name")
 #| context: server
 
 output$loser_name <- renderText({
-  loser_name <- presidents_winner() |>
+  presidents_winner() |>
     filter(perc == min(perc)) |>
     pull(candidate)
-  
-  parts <- str_split(loser_name, ", ")[[1]]
-  formatted_name <- paste(trimws(parts[2]), trimws(parts[1]))
-  text_lower <- tolower(formatted_name)
-  formatted_name <- toTitleCase(text_lower)
-  formatted_name
-})
-```
-
-### Column {width="25%"}
-
-```{r}
-#| content: valuebox
-#| title: "Year"
-
-textOutput("selected_year")
-```
-
-```{r}
-#| context: server
-
-output$selected_year <- renderText({
-  input$input_year
 })
 ```
 
@@ -438,34 +433,20 @@ plotOutput("ny_map")
 
 ```{r}
 #| content: valuebox
-#| title: "Year"
+# #| title: "Year"
 
-textOutput("selected_year")
+#textOutput("selected_year")
 ```
 
 ```{r}
 #| context: server
 
-output$selected_year <- renderText({
-  input$input_year
-})
+# output$selected_year <- renderText({
+#   input$input_year
+# })
 ```
 
 ### Column {width="50%"}
-
-```{r}
-#| content: valuebox
-#| title: "Number of Swing States"
-#| context: server
-
-# list(
-#   color = "#BA68C8",
-#   value = swing_states_binary() |> 
-#     count(values) |>
-#     filter(values == TRUE) |>
-#     pull(n)
-# )
-```
 
 ```{r}
 #| content: valuebox
