@@ -91,10 +91,6 @@ lower_case <- function(name) {
   formatted_name <- toTitleCase(text_lower)
   return(formatted_name)
 }
-
-multiply_by_100 <- function(x) {
-  return(paste0(x * 100, " points"))
-}
 ```
 
 ```{r}
@@ -135,8 +131,6 @@ gradient_map_data <- reactive({
     select(-year) |>
     rename(fips = state_fips, values = rep_dem_diff)
 })
-
-print(gradient_map_data)
 
 red_blue_map_data <- reactive({
   presidents |>
@@ -182,14 +176,22 @@ swing_states_red_blue <- reactive({
 ```{r}
 #| content: valuebox
 #| title: "Popular Vote Winner"
+
+list(
+  color = "#346EF0",
+  value = textOutput("winner_name")
+)
+```
+
+```{r}
 #| context: server
 
-# list(
-#   color = "#346EF0",
-#   value = presidents_winner() |>
-#     filter(perc == max(perc)) |>
-#     pull(candidate)
-# )
+winner_name <- reactive({
+  presidents_winner() |>
+    filter(perc == max(perc)) |>
+    pull(candidate)
+})
+output$winner_name <- renderText(winner_name())
 ```
 
 ### Column {width="28%"}
@@ -288,19 +290,6 @@ output$red_blue_map <- renderPlot({
     legend.text = element_text(size = 12)
   )
 })
-
-# output$red_blue_map <- renderPlot({
-#   plot_usmap("states", data = red_blue_map_data()) +
-#   scale_fill_manual(values = c("DEMOCRAT" = "#346EF0", "REPUBLICAN" = "#EB3323"))+
-#                     #labels = lower_case) +
-#   labs(fill = "Presidential Party") +
-#   theme(
-#     legend.position = "right",
-#     legend.title = element_text(vjust = 1, size = 14),
-#     legend.key.size = unit(1.2, "cm"),
-#     legend.text = element_text(size = 12)
-#   )
-# })
 ```
 
 ```{r}
@@ -497,7 +486,6 @@ presidents_datatable <- presidents |>
   mutate(
     percentage_of_votes = scales::percent(candidatevotes / totalvotes, accuracy = 0.01),
     state = lower_case(state),
-    # candidate = reformat_name(candidate),
     party_detailed = lower_case(party_detailed),
     writein = lower_case(writein)
   ) |>
