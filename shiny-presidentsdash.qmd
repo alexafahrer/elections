@@ -52,7 +52,7 @@ This data represents the **popular vote** in each state, not the electoral colle
 
 Welcome to our dashboard!
 
-Abstract
+This project attempted to examine presidential voting trends in the United States. With a shared interest in statistics and a curiosity about the upcoming presidential election, we aimed to analyze historical data to uncover insights into state-based voting behaviors. Our project goals focused on two main objectives. Firstly, we wanted to understand the changes of presidential voting behaviors over time, particularly focusing on state-level trends. To achieve this, we created two maps: one using a gradient to display the candidate polarization within a state and another simply coloring the popular vote winner by state. Secondly, we aimed to explore the emergence and evolution of swing states since 1976. To address these questions, we developed a Quarto dashboard, allowing users to select presidential election years from 1976 to 2020 for analysis. The dashboard provides a comprehensive view of each selected year, showcasing the popular vote winner and loser, gradient maps indicating point differential, and our highlighted home states.
 
 ---
 
@@ -65,11 +65,9 @@ Page Descriptions
 - [Write Up:](#write-up) Page with the required write-up for the class.
 - [About:](#about) Page describing the team members involved in the project.
 
-About the Data
-
 ---
 
-Data Source
+About the Data
 
 The data were originally collected by the [MIT Election Data and Science Lab](https://electionlab.mit.edu/). We accessed the data through the [Harvard Dataverse Database](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX).
 
