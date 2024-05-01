@@ -1,0 +1,14 @@
+name: project-2-team_ella
+title: project-2-team_ella
+username: afahrer
+account: afahrer
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 11907161
+bundleId: 8562217
+url: https://afahrer.shinyapps.io/project-2-team_ella/
+version: 1
+quarto_version: 1.4.553
+quarto_engines: knitr
+asMultiple: FALSE
+asStatic: FALSE
