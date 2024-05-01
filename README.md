@@ -12,4 +12,5 @@ The files in this folder include:
 - `proposal.qmd`: Includes our original plan and intentions for the project. 
 - `index.qmd`: Our final dashboard for the project.
 - Data Folder: Includes one data set used in our project. 
+- `index.html` and `index_files`: Required for deployment of dashboard.
 
