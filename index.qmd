@@ -44,7 +44,9 @@ selectInput(
 ::: {.callout-note}
 ## Note
 
-This data represents the **popular vote** in each state, not the electoral college vote. 
+This data represents the **popular vote** in each state, not the Electoral College vote. 
+
+The winner of the popular vote has gone on to win the presidency in every election shown except for in 2000 and 2016.
 :::
 
 # Home
