@@ -101,9 +101,7 @@ presidents_winner <- reactive({
     select(year, state, state_fips, candidate, party_simplified, candidatevotes, totalvotes) |>
     group_by(candidate) |>
     summarize(total_votes = sum(candidatevotes)) |>
-    mutate(perc = total_votes / sum(total_votes)) |>
-    group_by(candidate) |>
-    ungroup()
+    mutate(perc = total_votes / sum(total_votes))
 })
 
 gradient_map_data <- reactive({
@@ -186,35 +184,33 @@ output$input_year <- renderText({
 #| color: "green"
 
 textOutput("winner_name")
+textOutput("winner_party")
 ```
 
 ```{r}
 #| context: server
 
 output$winner_name <- renderText({
-  candidate_name <- presidents_winner() |>
+  presidents_winner() |>
     filter(perc == max(perc)) |>
     pull(candidate)
-  candidate_name
-  
-  # # Split the name into parts
-  # parts <- str_split(candidate_name, ", ")[[1]]
-  # 
-  # # Identify and handle the suffix "Jr"
-  # suffix <- ifelse(grepl("Jr$", parts[2]), "Jr", "")
-  # first_part <- str_replace(parts[2], "Jr$", "")
-  # 
-  # # Trim, rearrange, and reformat the name
-  # formatted_name <- paste(trimws(first_part), trimws(parts[1]))
-  # text_lower <- tolower(formatted_name)
-  # formatted_name <- toTitleCase(text_lower)
-  # 
-  # # Append the suffix if it exists
-  # if (nchar(suffix) > 0) {
-  #   formatted_name <- paste(formatted_name, suffix)
-  # }
-  # 
-  # formatted_name
+})
+
+winner_name_reactive <- reactive({
+  presidents_winner() |>
+    filter(perc == max(perc)) |>
+    pull(candidate)
+})
+
+output$winner_party <- renderText({
+  presidents |>
+    filter(
+      candidate == winner_name_reactive()
+      ) |>
+    slice(1) |>
+    pull(party_simplified) |>
+    tolower() |>
+    tools::toTitleCase()
 })
 ```
 
@@ -225,6 +221,7 @@ output$winner_name <- renderText({
 #| title: "Losing Candidate"
 
 textOutput("loser_name")
+textOutput("loser_party")
 ```
 
 ```{r}
@@ -234,6 +231,23 @@ output$loser_name <- renderText({
   presidents_winner() |>
     filter(perc == min(perc)) |>
     pull(candidate)
+})
+
+loser_name_reactive <- reactive({
+  presidents_winner() |>
+    filter(perc == min(perc)) |>
+    pull(candidate)
+})
+
+output$loser_party <- renderText({
+  presidents |>
+    filter(
+      candidate == loser_name_reactive()
+      ) |>
+    slice(1) |>
+    pull(party_simplified) |>
+    tolower() |>
+    tools::toTitleCase()
 })
 ```
 

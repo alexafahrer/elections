@@ -13,4 +13,5 @@ The files in this folder include:
 - `index.qmd`: Our final dashboard for the project.
 - Data Folder: Includes one data set used in our project. 
 - `index.html` and `index_files`: Required for deployment of dashboard.
+- `rsconnect`: Folder needed for deployment through Shiny.io. 
 
