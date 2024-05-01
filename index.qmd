@@ -40,8 +40,6 @@ selectInput(
   choices = unique(presidents$year),
   selected = "1976"
 )
-
-# https://quarto.org/docs/interactive/
 ```
 
 <hr>
@@ -83,7 +81,7 @@ The data were originally collected by the [MIT Election Data and Science Lab](ht
 
 lower_case <- function(name) {
   text_lower <- tolower(name)
-  formatted_name <- tools::toTitleCase(text_lower)
+  formatted_name <- toTitleCase(text_lower)
   return(formatted_name)
 }
 ```
@@ -99,13 +97,9 @@ presidents_winner <- reactive({
       year == input$input_year,
       party_simplified %in% c("DEMOCRAT", "REPUBLICAN")
     ) |>
-    group_by(state) |>
-    filter(candidatevotes == max(candidatevotes)) |>
-    ungroup() |>
-    select(year, state, state_fips, candidate, party_simplified, candidatevotes, totalvotes) |>
     group_by(candidate) |>
-    summarize(total_votes = sum(candidatevotes)) |>
-    mutate(perc = total_votes / sum(total_votes))
+  filter(!is.na(candidate)) |>
+  summarize(perc = sum(candidatevotes) / sum(totalvotes))
 })
 
 gradient_map_data <- reactive({
@@ -199,7 +193,6 @@ output$winner_name <- renderText({
   candidate_name <- presidents_winner() |>
     filter(perc == max(perc)) |>
     pull(candidate)
-  
   #Case for Joe Biden 
   if (candidate_name == "BIDEN, JOSEPH R. JR") {
     formatted_name <- "Joseph R. Biden Jr"
@@ -209,16 +202,13 @@ output$winner_name <- renderText({
     formatted_name <- "George H.W. Bush" 
   }
   else {
-
     parts <- str_split(candidate_name, ", ")[[1]]
     first_part <- trimws(parts[2])  
     last_part <- trimws(parts[1])  
-
     formatted_name <- paste(first_part, last_part, sep=" ")
     formatted_name <- tolower(formatted_name)
     formatted_name <- toTitleCase(formatted_name)
   }
-
   formatted_name
 })
 
@@ -238,7 +228,7 @@ output$winner_party <- renderText({
     slice(1) |>
     pull(party_simplified) |>
     tolower() |>
-    tools::toTitleCase()
+    toTitleCase()
 })
 ```
 
@@ -259,16 +249,26 @@ output$loser_name <- renderText({
   candidate_name <- presidents_winner() |>
     filter(perc == min(perc)) |>
     pull(candidate)
-  
+    #Case for Joe Biden 
+  if (candidate_name == "BIDEN, JOSEPH R. JR") {
+    formatted_name <- "Joseph R. Biden Jr"
+  } 
+  #Case for HW
+  else if (candidate_name == "BUSH, GEORGE H.W.") {
+    formatted_name <- "George H.W. Bush" 
+  }
+  #Case for McCain
+  else if (candidate_name == "MCCAIN, JOHN") {
+    formatted_name <- "John McCain" 
+  }
+  else {
     parts <- str_split(candidate_name, ", ")[[1]]
     first_part <- trimws(parts[2])  
     last_part <- trimws(parts[1])  
-
     formatted_name <- paste(first_part, last_part, sep=" ")
     formatted_name <- tolower(formatted_name)
     formatted_name <- toTitleCase(formatted_name)
-  
-
+  }
   formatted_name
 })
 
@@ -286,7 +286,7 @@ output$loser_party <- renderText({
     slice(1) |>
     pull(party_simplified) |>
     tolower() |>
-    tools::toTitleCase()
+    toTitleCase()
 })
 ```
 
